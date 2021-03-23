@@ -1,0 +1,23 @@
+<div class="menu-container" fxLayout="column" fxLayoutAlign="space-between">
+  <div class="logo-container" fxFlex="20" fxLayoutAlign="center center">
+    <img src="../../../../assets/images/logo.png" alt="logo">
+  </div>
+  <div class="menu-list" fxFlex="45" fxLayout="column" fxLayoutAlign="space-evenly">
+    <div *ngFor="let item of menuItems" class="menu-item"
+         (click)="changeCurrentStep(item.label)"
+         [ngClass]="{'selected-item': item.label === currentStep}"
+         fxLayout="row"
+         fxLayoutAlign="start center">
+      <mat-icon aria-hidden="false">{{item.icon}}</mat-icon>
+      <p>{{item.label}}</p>
+    </div>
+  </div>
+  <div class="portal-navigation" fxFlex="20" fxLayoutAlign="center center">
+    <button mat-raised-button fxLayoutGap="15px" fxLayoutAlign="center center">
+      <div class="button-content" fxLayout="row" fxLayoutAlign="center center">
+        <mat-icon aria-hidden="false">monitor</mat-icon>
+        <p>Portal</p>
+      </div>
+    </button>
+  </div>
+</div>
