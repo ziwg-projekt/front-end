@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'app-form-sidebar',
-  templateUrl: './form-sidebar.component.html',
-  styleUrls: ['./form-sidebar.component.scss']
+  selector: 'app-sidebar',
+  templateUrl: './sidebar.component.html',
+  styleUrls: ['./sidebar.component.scss']
 })
-export class FormSidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit {
   public menuItems: { icon: string, label: string }[];
   public currentStep: string;
 
