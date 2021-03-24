@@ -8,6 +8,7 @@ import {FlexModule} from '@angular/flex-layout';
 import {MaterialModule} from '../material/material.module';
 import {SharedModule} from '../../shared/shared.module';
 import { FormPersonalDataComponent } from './pages/form-personal-data/form-personal-data.component';
+import {FormsModule} from '@angular/forms';
 
 
 
@@ -18,7 +19,8 @@ import { FormPersonalDataComponent } from './pages/form-personal-data/form-perso
     RegistrationFormRoutingModule,
     FlexModule,
     MaterialModule,
-    SharedModule
+    SharedModule,
+    FormsModule
   ],
   exports: [
     RegistrationFormComponent
