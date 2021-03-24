@@ -27,7 +27,7 @@
   }
 }
 
-.guide-icon-wrapper {
+.small-icon-wrapper {
   mat-icon {
     font-size: 40px;
     height: 40px;
@@ -66,7 +66,7 @@
 }
 
 .info-section {
-  background-color: burlywood;
+
 }
 
 .guide-card {
@@ -84,5 +84,50 @@
     span {
       font-weight: bold;
     }
+  }
+}
+.contact-container {
+  margin-top: 20px;
+}
+//.news-container {
+//  background-color: darkslateblue;
+//}
+//
+//.infection-rate-container {
+//  background-color: lightpink;
+//}
+
+.contact-bar {
+  height: 60px;
+  width: 320px;
+  border-radius: 20px 5px 20px 5px;
+  padding: 0;
+  background-color: $color-light-purple;
+  p {
+    margin: 0;
+    color: $color-purple;
+    opacity: 0.6;
+    font-size: 18px;
+  }
+  mat-icon {
+    font-size: 30px;
+    height: 30px;
+    width: 30px;
+    color: $color-purple;
+  }
+}
+
+.contact-image {
+  height: 60px;
+  width: 60px;
+  border-radius: 5px 5px;
+}
+
+.contact-icon-wrapper {
+  background-color: $color-light-purple;
+  mat-icon {
+    font-size: 30px;
+    height: 30px;
+    width: 30px;
   }
 }
