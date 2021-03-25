@@ -1,24 +1,25 @@
 <div class="form-main-page-container" fxLayout="row" fxLayoutGap="30px">
-  <div class="guide-section" fxFlex="55" fxLayout="column">
+  <div class="guide-section" fxFlex="65" fxLayout="column">
     <div class="guide-header" fxFlex="15" fxLayoutAlign="center center">
       <p>Witamy w rejestratorze szczepień!</p>
     </div>
     <div class="guide-counter-container" fxFlex="20" fxLayout="row" fxLayoutAlign="center" fxLayoutGap="30px">
       <mat-card fxFlex="45" fxLayoutAlign="center center" fxLayoutGap="20px" class="guide-counter-card guide-left-card">
-        <mat-card class="small-icon-wrapper" fxLayoutAlign="center center" >
+        <mat-card class="small-icon-wrapper" fxLayoutAlign="center center">
           <mat-icon aria-hidden="false">accessibility_new</mat-icon>
         </mat-card>
         <div class="counter-info">
           <h1>1 231 425</h1>
           <p>Zaszczepionych</p>
         </div>
-        <mat-card class="guide-icon-counter-wrapper" fxLayoutAlign="center center"  style="width: 50px">
-<!--          <mat-icon aria-hidden="false" fxLayoutAlign="center center">add</mat-icon>-->
+        <mat-card class="guide-icon-counter-wrapper" fxLayoutAlign="center center" style="width: 50px">
+          <!--          <mat-icon aria-hidden="false" fxLayoutAlign="center center">add</mat-icon>-->
           <p>+220</p>
         </mat-card>
       </mat-card>
-      <mat-card fxFlex="35" fxLayoutAlign="center center" fxLayoutGap="20px" class="guide-counter-card guide-right-card">
-        <mat-card class="small-icon-wrapper" fxLayoutAlign="center center" >
+      <mat-card fxFlex="35" fxLayoutAlign="center center" fxLayoutGap="20px"
+                class="guide-counter-card guide-right-card">
+        <mat-card class="small-icon-wrapper" fxLayoutAlign="center center">
           <mat-icon aria-hidden="false">accessibility_new</mat-icon>
         </mat-card>
         <div class="counter-info">
@@ -45,7 +46,7 @@
       </mat-card>
     </div>
   </div>
-  <div class="info-section" fxFlex="45" fxLayout="column">
+  <div class="info-section" fxFlex="35" fxLayout="column">
     <div class="contact-container" fxFlex="10" fxLayout="row" fxLayoutAlign="center" fxLayoutGap="30px">
       <mat-card class="small-icon-wrapper contact-icon-wrapper" fxLayoutAlign="center center">
         <mat-icon>info</mat-icon>
@@ -57,10 +58,46 @@
       <img class="contact-image" src="assets/images/doctor.png" alt="doctor">
     </div>
     <div class="news-container" fxFlex="55">
-
+      <div class="news-header" fxLayout="row" fxLayoutAlign="space-around end">
+        <h1>Aktualności</h1>
+        <div fxLayout="row">
+          <p>Zobacz wszystkie</p>
+          <mat-icon>navigate_next</mat-icon>
+        </div>
+      </div>
+      <div class="news-content-container" fxLayout="column" fxLayoutGap="20px">
+        <div class="news-item" fxLayout="row" fxLayoutGap="20px">
+          <div class="news-date">
+            <p>10.03</p>
+          </div>
+          <p>MZ: Bardzo dużo nowych zakażeń
+            <br> <span>Szczegóły raportu MZ</span></p>
+        </div>
+        <div class="news-item" fxLayout="row" fxLayoutGap="20px">
+          <div class="news-date">
+            <p>04.03</p>
+          </div>
+          <p>Znamy termin dostawy
+            <br> <span>Nowa partia szczepionek wkrótce</span></p>
+        </div>
+        <div class="news-item" fxLayout="row" fxLayoutGap="20px">
+          <div class="news-date">
+            <p>28.02</p>
+          </div>
+          <p>Ostrzeżenie!
+            <br> <span>Nowa mutacja koronawirusa w Polsce</span></p>
+        </div>
+        <div class="news-item" fxLayout="row" fxLayoutGap="20px">
+          <div class="news-date">
+            <p>13.02</p>
+          </div>
+          <p>Zaczynamy szczepić 70-latków
+            <br> <span>Kolejna grupa wiekowa</span></p>
+        </div>
+      </div>
     </div>
     <div class="infection-rate-container" fxFlex="30">
-      
+
     </div>
   </div>
 </div>
