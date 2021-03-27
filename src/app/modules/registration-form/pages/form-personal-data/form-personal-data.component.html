@@ -1,11 +1,22 @@
 <div class="form-personal-data-container" fxLayout="row" fxLayoutGap="30px">
-  <div class="form-section" fxFlex="30" fxLayout="column" fxFlexAlign="start center">
-    <mat-form-field class="example-form-field">
-      <mat-label>Clearable input</mat-label>
-      <input matInput type="text" [(ngModel)]="value">
-      <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field>
+  <div class="form-section" fxFlex="30">
+    <form [formGroup]="form" (ngSubmit)="submitForm()" fxLayout="column" fxFlexAlign="start center">
+      <mat-form-field class="example-form-field">
+        <mat-label>PESEL</mat-label>
+        <input matInput type="text" formControlName="pesel">
+        <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Sposób potwierdzenia</mat-label>
+        <mat-select formControlName="notification_type">
+          <mat-option *ngFor="let type of notificationTypes" [value]="type.value">
+            {{type.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button type="submit" mat-raised-button>Zapisz</button>
+    </form>
   </div>
 </div>

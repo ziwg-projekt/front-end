@@ -2,12 +2,36 @@
 
 @import "src/assets/scss/colors";
 
+@font-face {
+  font-family: "Montserrat";
+  src: local("Montserrat"), url("../../assets/fonts/Montserrat-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Montserrat-Bold";
+  src: local("Montserrat"), url("../../assets/fonts/Montserrat-Bold.ttf");
+}
+
+@font-face {
+  font-family: "Montserrat-SemiBold";
+  src: local("Montserrat"), url("../../assets/fonts/Montserrat-SemiBold.ttf");
+}
+
+@import '~@angular/material/theming';
+$custom-typography: mat-typography-config(
+  $font-family: 'Montserrat'
+);
+
+@include angular-material-typography($custom-typography);
 
 html, body {
   height: 100%;
-  font-family: Montserrat, serif;
+  margin: 0;
 }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+body {
+  font-family: "Montserrat", serif;
+}
 
 .mat-progress-bar-fill::after {
   background-color: $color-dark-pink;

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
+import {ApiService} from '../../../../core/services/api.service';
 
 @Component({
   selector: 'app-form-personal-data',
@@ -9,15 +10,33 @@ import {FormControl, FormGroup} from '@angular/forms';
 export class FormPersonalDataComponent implements OnInit {
   public form: FormGroup;
   value: any;
+  public notificationTypes: {name: string, value: number}[];
 
-  constructor() {
+  constructor(private api: ApiService) {
     this.form = new FormGroup({
       pesel: new FormControl(null),
-      confirmationType: new FormControl(null)
+      notification_type: new FormControl(null)
     });
+    this.notificationTypes = [
+      {
+        name: 'SMS',
+        value: 0
+      },
+      {
+        name: 'E-mail',
+        value: 1
+      }
+    ];
   }
 
   ngOnInit(): void {
+  }
+
+  public submitForm(): void {
+    console.log(this.form.value);
+    this.api.sendPersonalData(this.form.value).subscribe(res => {
+      console.log(res);
+    });
   }
 
 }

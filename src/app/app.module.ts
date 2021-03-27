@@ -7,6 +7,7 @@ import {MaterialModule} from './modules/material/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {RegistrationFormModule} from './modules/registration-form/registration-form.module';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import {RegistrationFormModule} from './modules/registration-form/registration-f
     MaterialModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
+    HttpClientModule,
     RegistrationFormModule
   ],
   providers: [],
