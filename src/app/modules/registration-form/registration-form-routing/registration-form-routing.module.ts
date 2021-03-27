@@ -3,6 +3,7 @@ import {RegistrationFormComponent} from '../registration-form.component';
 import {NgModule} from '@angular/core';
 import {FormMainPageComponent} from '../pages/form-main-page/form-main-page.component';
 import {FormPersonalDataComponent} from '../pages/form-personal-data/form-personal-data.component';
+import {FormMapStageComponent} from '../pages/form-map-stage/form-map-stage.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
       {
         path: 'personal-data',
         component: FormPersonalDataComponent
+      },
+      {
+        path: 'map',
+        component: FormMapStageComponent
       },
     ]
   }

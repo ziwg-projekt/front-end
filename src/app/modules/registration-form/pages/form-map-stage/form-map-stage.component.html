@@ -1,0 +1,7 @@
+<mgl-map #map [style]="'mapbox://styles/mapbox/streets-v9'" [zoom]="[zoomLevel]" [center]="(mapStore.lngLat$ | async) ? (mapStore.lngLat$ | async) : [17, 51]" (mouseover)="showHidePopups($event)">
+  <div *ngFor="let offer of offersStore.offers$ | async; let _index = index">
+    <ng-container *ngIf="offer.address !== null">
+      <app-marker #marker [offer]="offer" [index]="_index"></app-marker>
+    </ng-container>
+  </div>
+</mgl-map>
