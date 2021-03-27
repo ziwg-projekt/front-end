@@ -21,9 +21,7 @@
   p {
     margin: 0 0 0 20px;
     color: $color-white;
-    font-family: Montserrat, serif;
     font-size: 18px;
-    font-weight: lighter;
   }
   mat-icon {
     color: $color-white;
@@ -49,11 +47,11 @@
   background-color: $color-white;
   border-radius: 15px 0 0 15px;
   mat-icon {
-    color: #5840BB;
+    color: $color-purple;
   }
   p {
-    color: #5840BB;
-    font-weight: bold;
+    color: $color-purple;
+    font-family: "Montserrat-Bold", serif;
   }
 }
 

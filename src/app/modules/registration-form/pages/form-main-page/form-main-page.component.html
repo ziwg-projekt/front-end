@@ -66,33 +66,12 @@
         </div>
       </div>
       <div class="news-content-container" fxLayout="column" fxLayoutGap="20px">
-        <div class="news-item" fxLayout="row" fxLayoutGap="20px">
+        <div *ngFor="let item of newsArray" class="news-item" fxLayout="row" fxLayoutGap="20px">
           <div class="news-date">
-            <p>10.03</p>
+            <p>{{item.date}}</p>
           </div>
-          <p>MZ: Bardzo dużo nowych zakażeń
-            <br> <span>Szczegóły raportu MZ</span></p>
-        </div>
-        <div class="news-item" fxLayout="row" fxLayoutGap="20px">
-          <div class="news-date">
-            <p>04.03</p>
-          </div>
-          <p>Znamy termin dostawy
-            <br> <span>Nowa partia szczepionek wkrótce</span></p>
-        </div>
-        <div class="news-item" fxLayout="row" fxLayoutGap="20px">
-          <div class="news-date">
-            <p>28.02</p>
-          </div>
-          <p>Ostrzeżenie!
-            <br> <span>Nowa mutacja koronawirusa w Polsce</span></p>
-        </div>
-        <div class="news-item" fxLayout="row" fxLayoutGap="20px">
-          <div class="news-date">
-            <p>13.02</p>
-          </div>
-          <p>Zaczynamy szczepić 70-latków
-            <br> <span>Kolejna grupa wiekowa</span></p>
+          <p>{{item.label}}
+            <br> <span>{{item.labelExtension}}</span></p>
         </div>
       </div>
     </div>
@@ -101,26 +80,3 @@
     </div>
   </div>
 </div>
-
-<!--<div>-->
-<!--  <p>1. Zarejestruj się</p>-->
-<!--  <p>już dziś i zarezerwuj termin szczepienia w dowolnym miejscu.-->
-<!--    Po wypełnieniu formularza z danymi osobami otrzymasz propozycję lokalizacji do szczepienia.-->
-<!--  </p>-->
-<!--</div>-->
-<!--<div>-->
-<!--  <p>-->
-<!--    2. Wybierz-->
-<!--  </p>-->
-<!--  <p>-->
-<!--    placówkę w okolicy i termin w którym zostaniesz zaszczepiony.-->
-<!--  </p>-->
-<!--</div>-->
-<!--<div>-->
-<!--  <p>-->
-<!--    3. Potwierdź-->
-<!--  </p>-->
-<!--  <p>-->
-<!--    swoje dane i ustaw się w kolejce bez wychodzenia z domu.-->
-<!--  </p>-->
-<!--</div>-->
