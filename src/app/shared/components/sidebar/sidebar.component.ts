@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -6,24 +7,29 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
-  public menuItems: { icon: string, label: string }[];
+  public menuItems: { icon: string, label: string, href: string }[];
   public currentStep: string;
 
-  constructor() {
+  constructor(private router: Router) {
     this.menuItems = [
-      {icon: 'home', label: 'Strona główna'},
-      {icon: 'assignment', label: 'Dane osobowe'},
-      {icon: 'map', label: 'Wybór placówki'},
-      {icon: 'poll', label: 'Podsumowanie'},
-      {icon: 'done', label: 'Akceptacja'},
+      {icon: 'home', label: 'Strona główna', href:  '/registration/main-page'},
+      {icon: 'assignment', label: 'Dane osobowe', href:  '/registration/personal-data'},
+      {icon: 'map', label: 'Wybór placówki', href:  '/registration/personal-data'},
+      {icon: 'poll', label: 'Podsumowanie', href:  '/registration/personal-data'},
+      {icon: 'done', label: 'Akceptacja', href:  '/registration/personal-data'},
     ];
     this.currentStep = 'Strona główna';
+  }
+
+  public navigate(route: string): void {
+    this.router.navigate([route]);
   }
 
   ngOnInit(): void {
   }
 
-  public changeCurrentStep(newLabel: string): void {
-    this.currentStep = newLabel;
+  public changeCurrentStep(newLabel: any): void {
+    this.navigate(newLabel.href);
+    this.currentStep = newLabel.label;
   }
 }

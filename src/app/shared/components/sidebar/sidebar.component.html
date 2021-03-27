@@ -4,10 +4,11 @@
   </div>
   <div class="menu-list" fxFlex="45" fxLayout="column" fxLayoutAlign="space-evenly">
     <div *ngFor="let item of menuItems" class="menu-item"
-         (click)="changeCurrentStep(item.label)"
+         (click)="changeCurrentStep(item)"
          [ngClass]="{'selected-item': item.label === currentStep}"
          fxLayout="row"
-         fxLayoutAlign="start center">
+         fxLayoutAlign="start center"
+        >
       <mat-icon aria-hidden="false">{{item.icon}}</mat-icon>
       <p>{{item.label}}</p>
     </div>
