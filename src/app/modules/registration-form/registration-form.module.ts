@@ -10,11 +10,12 @@ import {SharedModule} from '../../shared/shared.module';
 import { FormPersonalDataComponent } from './pages/form-personal-data/form-personal-data.component';
 import {FormsModule} from '@angular/forms';
 import { FormMapStageComponent } from './pages/form-map-stage/form-map-stage.component';
+import { MapComponent } from './components/map/map.component';
 
 
 
 @NgModule({
-  declarations: [RegistrationFormComponent, FormMainPageComponent, FormPersonalDataComponent, FormMapStageComponent],
+  declarations: [RegistrationFormComponent, FormMainPageComponent, FormPersonalDataComponent, FormMapStageComponent, MapComponent],
   imports: [
     CommonModule,
     RegistrationFormRoutingModule,
