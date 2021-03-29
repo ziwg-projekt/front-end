@@ -8,10 +8,12 @@ import {SharedModule} from '../../shared/shared.module';
 import {FormPersonalDataComponent} from './pages/form-personal-data/form-personal-data.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FormMainPageComponent} from './pages/form-main-page/form-main-page.component';
+import {ChartsModule} from 'ng2-charts';
+import { LineChartComponent } from './components/line-chart/line-chart.component';
 
 
 @NgModule({
-  declarations: [RegistrationFormComponent, FormMainPageComponent, FormPersonalDataComponent],
+  declarations: [RegistrationFormComponent, FormMainPageComponent, FormPersonalDataComponent, LineChartComponent],
   imports: [
     CommonModule,
     RegistrationFormRoutingModule,
@@ -19,7 +21,8 @@ import {FormMainPageComponent} from './pages/form-main-page/form-main-page.compo
     MaterialModule,
     SharedModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ChartsModule
   ],
   exports: [
     RegistrationFormComponent
