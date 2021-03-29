@@ -1,3 +1,5 @@
+@import "src/assets/scss/colors";
+
 .form-map-stage-container {
   height: 100%;
   width: 100%;
@@ -7,17 +9,23 @@
 
 }
 .map-wrapper-header {
+  font-family: Montserrat-SemiBold, serif;
   font-size: 46px;
-  background-color: #f96a9b;
+  color: $color-dark-blue;
+  padding-left: 40px;
 }
 .map-container-header {
-  background-color: #C7F2FF;
+  top: 25px;
+  position: relative;
 
   mat-card {
-    height: 70px;
+    height: 100%;
     padding: 0;
+    border-radius: 30px;
+    color: $color-dark-blue;
+    font-family: Montserrat-SemiBold, serif;
+    font-size: 30px;
   }
 }
 .map-container {
-  background-color: darkslateblue;
 }
