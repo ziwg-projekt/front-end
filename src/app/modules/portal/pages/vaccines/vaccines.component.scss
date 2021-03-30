@@ -1,0 +1,56 @@
+@import "src/assets/scss/colors";
+
+.main-container {
+  height: 100%;
+  width: 100%;
+  padding: 36px;
+}
+
+.title-container {
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 35px;
+  text-align: center;
+  color: $color-dark-blue;
+}
+
+form,
+.statistics-container {
+  height: 70%;
+  width: 100%;
+  border-radius: 60px;
+  padding: 5%;
+}
+
+.form-container {
+  form {
+    background: $color-light-blue;
+    .add-vaccine-button {
+      height: 50px;
+      width: 100px;
+      background: $color-purple;
+      border-radius: 20px;
+      color: $color-white;
+      text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    }
+  }
+}
+
+.statistics-container {
+  background: $color-light-pink;
+
+  .title-container{
+    margin-bottom:20px;
+  }
+}
+
+mat-form-field {
+  background-color: $color-light-purple;
+  border-radius: 10px;
+  color: $dark-placeholder;
+  padding: 5px;
+  height: 50px;
+  width: 100%;
+  max-width: 70%;
+}

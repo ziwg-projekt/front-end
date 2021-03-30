@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {RegistrationFormModule} from './modules/registration-form/registration-form.module';
 import {HttpClientModule} from '@angular/common/http';
+import {PortalModule} from './modules/portal/portal.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import {HttpClientModule} from '@angular/common/http';
     BrowserAnimationsModule,
     FlexLayoutModule,
     HttpClientModule,
-    RegistrationFormModule
+    RegistrationFormModule,
+    PortalModule
   ],
   providers: [],
   bootstrap: [AppComponent]

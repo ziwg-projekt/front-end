@@ -1,0 +1,27 @@
+<div class="main-container" fxLayout="row" fxLayoutGap="30px">
+  <div class="form-container" fxFlex="40" fxLayoutAlign="center center">
+    <form  fxLayout="column" fxLayoutAlign="space-evenly center">
+      <div class="title-container">Dane szczepionki</div>
+      <mat-form-field>
+        <mat-select placeholder="Firma"></mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" placeholder="Numer"/>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" placeholder="Typ"/>
+      </mat-form-field>
+      <button mat-raised-button type="submit" class="add-vaccine-button">
+        Dodaj
+      </button>
+    </form>
+  </div>
+  <div fxFlex="60" fxLayoutAlign="center center">
+    <div class="statistics-container" fxLayout="column" fxLayoutAlign="start center">
+        <div class="title-container">Obecny stan placówki</div>
+        <mat-form-field>
+            <mat-select placeholder="Rodzaj statystyki"></mat-select>
+        </mat-form-field>
+    </div>
+  </div>
+</div>

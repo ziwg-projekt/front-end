@@ -10,6 +10,10 @@ const routes: Routes = [
   {
     path: 'registration',
     loadChildren: () => import('./modules/registration-form/registration-form.module').then(m => m.RegistrationFormModule)
+  },
+  {
+    path: 'portal',
+    loadChildren: () => import('./modules/portal/portal.module').then(m => m.PortalModule)
   }
 ];
 
