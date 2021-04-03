@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 
 @Component({
@@ -12,7 +13,11 @@ export class SidebarComponent implements OnInit {
   public menuItems: { icon: string; label: string; href: string }[];
   public currentStep: string;
 
-  constructor(private router: Router, public dialog: MatDialog) {
+  constructor(
+    private router: Router,
+    public dialog: MatDialog,
+    private authService: AuthService
+  ) {
     this.menuItems = [
       { icon: 'home', label: 'Strona główna', href: '/registration/main-page' },
       {
@@ -52,11 +57,12 @@ export class SidebarComponent implements OnInit {
 
   openLoginDialog() {
     const dialogRef = this.dialog.open(LoginDialogComponent, {
-      width: '250px'
+      width: '250px',
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
+     // if (this.authService.isLoggedIn())
+        //this.router.navigate(['/portal']);
     });
   }
 }

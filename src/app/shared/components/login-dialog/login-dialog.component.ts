@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { AuthService } from 'src/app/core/services/auth.service';
 
@@ -32,9 +33,13 @@ export class LoginDialogComponent implements OnInit, OnDestroy {
     if (this.loginForm.valid) {
       this.authSubscription = this.authService
         .logIn(this.loginForm.value)
-        .subscribe((data) => {
-          console.log = data;
-        });
+        .subscribe(
+          (data) => {
+            this.authService.setToken(data.access_token);
+            this.dialogRef.close();
+          },
+          (error) => {}
+        );
     }
   }
 }

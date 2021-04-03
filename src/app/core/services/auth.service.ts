@@ -16,4 +16,27 @@ export class AuthService {
       password: loginForm.password,
     });
   }
+
+  isLoggedIn() {
+    if (this.getToken()) {
+      return true;
+    }
+    return false;
+  }
+
+  logOut() {
+    localStorage.clear();
+  }
+
+  setToken(value: string) {
+    localStorage.setItem('access_token', value);
+  }
+
+  getToken() {
+    return localStorage.getItem('access_token');
+  }
+
+  removeToken() {
+    localStorage.removeItem('access_token');
+  }
 }
