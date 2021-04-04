@@ -6,6 +6,7 @@
 >
   <div class="form-container" fxFlex.gt-md="40" fxLayoutAlign="center center">
     <form
+      *ngIf="companies$ | async as companies"
       [formGroup]="vaccineFormGroup"
       fxLayout="column"
       fxLayoutAlign="space-between center"
@@ -14,7 +15,11 @@
       <div class="title-container">Dane szczepionki</div>
       <mat-form-field appearance="outline">
         <mat-label>Firma</mat-label>
-        <mat-select formControlName="company"></mat-select>
+        <mat-select formControlName="company">
+          <mat-option *ngFor="let c of $any(companies.content)" [value]="c">{{
+            c.name
+          }}</mat-option>
+        </mat-select>
         <mat-error>Firma szczepionki jest wymagana</mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline">
@@ -34,6 +39,7 @@
   </div>
   <div fxFlex.gt-md="60" fxLayoutAlign="center center">
     <div
+      *ngIf="statistics$ | async as statistics"
       class="statistics-container"
       fxLayout="column"
       fxLayoutAlign="start center"
@@ -41,17 +47,37 @@
       <div class="title-container">Obecny stan placówki</div>
       <mat-form-field appearance="outline">
         <mat-label>Rodzaj statystyki</mat-label>
-        <mat-select></mat-select>
+        <mat-select
+          [(ngModel)]="chosenStatistic"
+          (ngModelChange)="sortStatistics(statistics)"
+        >
+          <mat-option *ngFor="let s of statisticsTypes" [value]="s">
+            {{ s.value }}</mat-option
+          >
+        </mat-select>
       </mat-form-field>
       <div fxLayout="row" class="labels-container">
         <span fxFlex="50">Firma</span>
         <span fxFlex="50">Liczba szczepionek</span>
       </div>
-      <div fxLayout="row" class="labels-container">
-        <span fxFlex="50" fxLayoutAlign="center center" >
-          <img src="https://cowzdrowiu.pl/images/media/images/Kmm6cKAay3EoGcXOoEYxMTsvNSHakejqPCUD0px7.png" alt="">
+      <div fxLayout="row" class="labels-container" *ngFor="let s of statistics">
+        <span fxFlex="50" fxLayoutAlign="center center">
+          <img
+            src="{{ s.logo_path }}"
+            alt="{{ s.company }}"
+            title="{{ s.company }}"
+          />
         </span>
-        <span fxFlex="50" fxLayoutAlign="center center" class="amount-container">50</span>
+        <span
+          fxFlex="50"
+          fxLayoutAlign="center center"
+          class="amount-container"
+          [ngSwitch]="chosenStatistic.type"
+        >
+          <p *ngSwitchCase="vaccineStateEnum.Given">{{ s.given }}</p>
+          <p *ngSwitchCase="vaccineStateEnum.Available">{{ s.available }}</p>
+          <p *ngSwitchCase="vaccineStateEnum.Assigned">{{ s.assigned }}</p>
+        </span>
       </div>
     </div>
   </div>

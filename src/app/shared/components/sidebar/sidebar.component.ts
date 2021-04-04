@@ -78,8 +78,11 @@ export class SidebarComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      // if (this.authService.isLoggedIn())
-      //this.router.navigate(['/portal']);
+      if (this.authService.isLoggedIn()) this.router.navigate(['/portal']);
     });
+  }
+  logout(){
+    this.authService.logOut();
+    this.router.navigate(['/registration'])
   }
 }
