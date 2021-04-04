@@ -1,0 +1,21 @@
+@import "src/assets/scss/colors";
+@import "src/assets/scss/styles";
+form {
+  position: relative;
+}
+.close-button {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+
+  .close-icon {
+    transition: 1s ease-in-out;
+  }
+}
+.login-button {
+  color: $color-purple;
+  margin-top: 10px;
+}
+.form-control-container {
+  margin: 5px 10px;
+}
