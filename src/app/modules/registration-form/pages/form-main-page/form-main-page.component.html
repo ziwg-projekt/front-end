@@ -20,7 +20,7 @@
       <mat-card fxFlex="35" fxLayoutAlign="center center" fxLayoutGap="20px"
                 class="guide-counter-card guide-right-card">
         <mat-card class="small-icon-wrapper" fxLayoutAlign="center center">
-          <mat-icon aria-hidden="false">accessibility_new</mat-icon>
+          <mat-icon aria-hidden="false">place</mat-icon>
         </mat-card>
         <div class="counter-info">
           <h1>1 536</h1>
@@ -57,7 +57,7 @@
       </mat-card>
       <img class="contact-image" src="assets/images/doctor.png" alt="doctor">
     </div>
-    <div class="news-container" fxFlex="55">
+    <div class="news-container" fxFlex="45">
       <div class="news-header" fxLayout="row" fxLayoutAlign="space-around end">
         <h1>Aktualności</h1>
         <div fxLayout="row">
@@ -75,8 +75,9 @@
         </div>
       </div>
     </div>
-    <div class="infection-rate-container" fxFlex="30">
-
+    <div class="infection-rate-container" fxFlex="40">
+      <h1>Aktualna liczba zachorowań</h1>
+      <app-line-chart></app-line-chart>
     </div>
   </div>
 </div>
