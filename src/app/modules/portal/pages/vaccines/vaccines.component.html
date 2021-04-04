@@ -1,27 +1,58 @@
-<div class="main-container" fxLayout="row" fxLayoutGap="30px">
-  <div class="form-container" fxFlex="40" fxLayoutAlign="center center">
-    <form  fxLayout="column" fxLayoutAlign="space-evenly center">
+<div
+  class="main-container"
+  fxLayout.gt-md="row"
+  fxLayout="column"
+  fxLayoutGap="30px"
+>
+  <div class="form-container" fxFlex.gt-md="40" fxLayoutAlign="center center">
+    <form
+      [formGroup]="vaccineFormGroup"
+      fxLayout="column"
+      fxLayoutAlign="space-between center"
+      (ngSubmit)="addVaccine()"
+    >
       <div class="title-container">Dane szczepionki</div>
-      <mat-form-field>
-        <mat-select placeholder="Firma"></mat-select>
+      <mat-form-field appearance="outline">
+        <mat-label>Firma</mat-label>
+        <mat-select formControlName="company"></mat-select>
+        <mat-error>Firma szczepionki jest wymagana</mat-error>
       </mat-form-field>
-      <mat-form-field>
-        <input matInput type="text" placeholder="Numer"/>
+      <mat-form-field appearance="outline">
+        <mat-label>Numer szczepionki</mat-label>
+        <input matInput type="text" formControlName="code" />
+        <mat-error>Numer szczepionki jest wymagany</mat-error>
       </mat-form-field>
-      <mat-form-field>
-        <input matInput type="text" placeholder="Typ"/>
+      <mat-form-field appearance="outline">
+        <mat-label>Rodzaj szczepionki</mat-label>
+        <input matInput type="text" formControlName="type" />
+        <mat-error>Rodzaj szczepionki jest wymagany</mat-error>
       </mat-form-field>
       <button mat-raised-button type="submit" class="add-vaccine-button">
         Dodaj
       </button>
     </form>
   </div>
-  <div fxFlex="60" fxLayoutAlign="center center">
-    <div class="statistics-container" fxLayout="column" fxLayoutAlign="start center">
-        <div class="title-container">Obecny stan placówki</div>
-        <mat-form-field>
-            <mat-select placeholder="Rodzaj statystyki"></mat-select>
-        </mat-form-field>
+  <div fxFlex.gt-md="60" fxLayoutAlign="center center">
+    <div
+      class="statistics-container"
+      fxLayout="column"
+      fxLayoutAlign="start center"
+    >
+      <div class="title-container">Obecny stan placówki</div>
+      <mat-form-field appearance="outline">
+        <mat-label>Rodzaj statystyki</mat-label>
+        <mat-select></mat-select>
+      </mat-form-field>
+      <div fxLayout="row" class="labels-container">
+        <span fxFlex="50">Firma</span>
+        <span fxFlex="50">Liczba szczepionek</span>
+      </div>
+      <div fxLayout="row" class="labels-container">
+        <span fxFlex="50" fxLayoutAlign="center center" >
+          <img src="https://cowzdrowiu.pl/images/media/images/Kmm6cKAay3EoGcXOoEYxMTsvNSHakejqPCUD0px7.png" alt="">
+        </span>
+        <span fxFlex="50" fxLayoutAlign="center center" class="amount-container">50</span>
+      </div>
     </div>
   </div>
 </div>
