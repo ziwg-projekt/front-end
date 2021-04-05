@@ -1,4 +1,5 @@
-import { VaccineStateEnum } from '../enums/vaccine-state.enum';
+import { VaccineState } from '../enums/vaccine-state.enum';
+import { VaccineType } from '../enums/vaccine-type.enum';
 import { Company } from './company';
 import { Hospital } from './hospital';
 
@@ -7,6 +8,6 @@ export interface Vaccine {
   code: string;
   company: Company;
   hospital: Hospital;
-  state: VaccineStateEnum;
-  type: string;
+  state: VaccineState;
+  type: VaccineType;
 }

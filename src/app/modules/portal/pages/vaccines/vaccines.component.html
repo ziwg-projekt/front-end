@@ -10,7 +10,6 @@
       [formGroup]="vaccineFormGroup"
       fxLayout="column"
       fxLayoutAlign="space-between center"
-      (ngSubmit)="addVaccine()"
     >
       <div class="title-container">Dane szczepionki</div>
       <mat-form-field appearance="outline">
@@ -29,10 +28,19 @@
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Rodzaj szczepionki</mat-label>
-        <input matInput type="text" formControlName="type" />
+        <mat-select formControlName="type">
+          <mat-option *ngFor="let v of vaccinesTypes" [value]="v.type">
+            {{ v.value }}</mat-option
+          >
+        </mat-select>
         <mat-error>Rodzaj szczepionki jest wymagany</mat-error>
       </mat-form-field>
-      <button mat-raised-button type="submit" class="add-vaccine-button">
+      <button
+        mat-raised-button
+        type="button"
+        class="add-vaccine-button"
+        (click)="addVaccine()"
+      >
         Dodaj
       </button>
     </form>
@@ -74,9 +82,9 @@
           class="amount-container"
           [ngSwitch]="chosenStatistic.type"
         >
-          <p *ngSwitchCase="vaccineStateEnum.Given">{{ s.given }}</p>
-          <p *ngSwitchCase="vaccineStateEnum.Available">{{ s.available }}</p>
-          <p *ngSwitchCase="vaccineStateEnum.Assigned">{{ s.assigned }}</p>
+          <p *ngSwitchCase="vaccineState.Given">{{ s.given }}</p>
+          <p *ngSwitchCase="vaccineState.Available">{{ s.available }}</p>
+          <p *ngSwitchCase="vaccineState.Assigned">{{ s.assigned }}</p>
         </span>
       </div>
     </div>

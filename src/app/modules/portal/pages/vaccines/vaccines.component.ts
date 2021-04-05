@@ -2,12 +2,17 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { VaccineStateEnum } from 'src/app/core/enums/vaccine-state.enum';
-import { Company } from 'src/app/core/models/company';
+import { VaccineState } from 'src/app/core/enums/vaccine-state.enum';
 import { CompaniesService } from 'src/app/core/services/companies.service';
 import { VaccinesService } from 'src/app/core/services/vaccines.service';
 import { HospitalsService } from 'src/app/core/services/hospitals.service';
 import { Statistic } from 'src/app/core/models/statistic';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { UsersService } from 'src/app/core/services/users.service';
+import { Hospital } from 'src/app/core/models/hospital';
+import { Observable } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+import { VaccineType } from 'src/app/core/enums/vaccine-type.enum';
 
 @Component({
   selector: 'app-vaccines',
@@ -17,26 +22,38 @@ import { Statistic } from 'src/app/core/models/statistic';
 export class VaccinesComponent implements OnInit, OnDestroy {
   vaccineFormGroup: FormGroup;
   subscriptions: Subscription[] = [];
+  hospital: Hospital;
   companies$ = this.companiesService.getCompanies();
-  statistics$ = this.hospitalsService.getStatistics().pipe(
-    map((s) => {
-      return this.sortStatistics(s);
-    })
-  );
+  statistics$: Observable<any[]>;
   statisticsTypes: Statistic[] = [
-    { type: VaccineStateEnum.Available, value: 'Dostępne szczepionki' },
-    { type: VaccineStateEnum.Assigned, value: 'Przypisane szczepionki' },
-    { type: VaccineStateEnum.Given, value: 'Rozdane szczepionki' },
+    { type: VaccineState.Available, value: 'Dostępne szczepionki' },
+    { type: VaccineState.Assigned, value: 'Przypisane szczepionki' },
+    { type: VaccineState.Given, value: 'Rozdane szczepionki' },
+  ];
+  vaccinesTypes: any[] = [
+    { type: VaccineType.Genetic, value: 'Genetyczna' },
+    { type: VaccineType.Vectorial, value: 'Wektorowa' },
   ];
   chosenStatistic: Statistic = this.statisticsTypes[0];
-  vaccineStateEnum = VaccineStateEnum;
+  vaccineState = VaccineState;
 
   constructor(
     private fb: FormBuilder,
     private vaccinesService: VaccinesService,
     private companiesService: CompaniesService,
-    private hospitalsService: HospitalsService
-  ) {} //,private authService: AuthService;) {}
+    private hospitalsService: HospitalsService,
+    private authService: AuthService,
+    private usersService: UsersService,
+    private toastr: ToastrService
+  ) {
+    this.subscriptions.push(
+      this.usersService.getUser(this.authService.userId).subscribe((u) => {
+        this.hospital = u.hospital;
+        this.getStatistics(this.hospital.id);
+        this.initFormGroup();
+      })
+    );
+  }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((s) => {
@@ -45,11 +62,15 @@ export class VaccinesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.initFormGroup();
+  }
+
+  initFormGroup() {
     this.vaccineFormGroup = this.fb.group({
       code: [null, Validators.required],
       company: [null, Validators.required],
-      // hospital: [], //this.authService.getHospital()],
-      state: [VaccineStateEnum.Available],
+      hospital: [this.hospital],
+      state: [VaccineState.Available],
       type: [null, Validators.required],
     });
   }
@@ -58,24 +79,39 @@ export class VaccinesComponent implements OnInit, OnDestroy {
     console.log(this.vaccineFormGroup.value);
     if (this.vaccineFormGroup.valid) {
       this.subscriptions.push(
-        this.vaccinesService
-          .addVacine(this.vaccineFormGroup.value)
-          .subscribe((data) => {
-            console.log(data);
-          })
+        this.vaccinesService.addVacine(this.vaccineFormGroup.value).subscribe(
+          (data) => {
+            this.initFormGroup();
+            this.toastr.success('Dodano szczepionkę');
+            this.getStatistics(this.hospital.id);
+          },
+          (error) => {
+            this.toastr.error('Nie udało się dodać szczepionki');
+          }
+        )
       );
-      this.vaccineFormGroup.reset();
+    } else {
+      this.toastr.warning('Wypełnij informacje o szczepionce');
+      this.vaccineFormGroup.markAllAsTouched();
     }
+  }
+
+  getStatistics(id: number) {
+    this.statistics$ = this.hospitalsService.getStatistics(id).pipe(
+      map((s) => {
+        return this.sortStatistics(s);
+      })
+    );
   }
   sortStatistics(statistics) {
     switch (this.chosenStatistic.type) {
-      case VaccineStateEnum.Given: {
+      case VaccineState.Given: {
         return statistics.sort((a, b) => b.given - a.given);
       }
-      case VaccineStateEnum.Available: {
+      case VaccineState.Available: {
         return statistics.sort((a, b) => b.available - a.available);
       }
-      case VaccineStateEnum.Assigned: {
+      case VaccineState.Assigned: {
         return statistics.sort((a, b) => b.assigned - a.assigned);
       }
     }

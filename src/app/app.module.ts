@@ -10,6 +10,8 @@ import { PortalModule } from './modules/portal/portal.module';
 import { RegistrationFormModule } from './modules/registration-form/registration-form.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './core/interceptors/token.interceptor';
+import { ToastrModule } from 'ngx-toastr';
+import { PortalGuard } from './core/guards/portal.guard';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,9 +24,10 @@ import { TokenInterceptor } from './core/interceptors/token.interceptor';
     HttpClientModule,
     RegistrationFormModule,
     PortalModule,
+    ToastrModule.forRoot()
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },PortalGuard
   ],
   bootstrap: [AppComponent],
 })

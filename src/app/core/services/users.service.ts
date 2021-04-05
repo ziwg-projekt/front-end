@@ -1,16 +1,18 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
 import { environment } from 'src/environments/environment';
+import { Vaccine } from '../models/vaccine';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root',
 })
-export class HospitalsService {
+export class UsersService {
   host: string = environment.host;
   constructor(private http: HttpClient) {}
 
-  getStatistics(id: number): Observable<any> {
-    return this.http.get(this.host + `v1/hospitals/${id}/vaccines/stats`);
+  getUser(id: number): Observable<User> {
+    return this.http.get<User>(this.host + 'v1/users/' + id);
   }
 }
