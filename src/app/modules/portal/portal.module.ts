@@ -8,9 +8,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PortalComponent } from './portal.component';
 import { VaccinesComponent } from './pages/vaccines/vaccines.component';
 import { PortalRoutingModule } from './portal-routing/portal-routing.module';
+import { PatientsComponent } from './pages/patients/patients.component';
 
 @NgModule({
-  declarations: [PortalComponent, VaccinesComponent],
+  declarations: [PortalComponent, VaccinesComponent, PatientsComponent],
   imports: [
     CommonModule,
     FlexModule,
@@ -18,7 +19,7 @@ import { PortalRoutingModule } from './portal-routing/portal-routing.module';
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    PortalRoutingModule
+    PortalRoutingModule,
   ],
   exports: [PortalComponent],
 })
