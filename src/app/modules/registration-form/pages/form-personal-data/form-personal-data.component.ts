@@ -15,7 +15,7 @@ export class FormPersonalDataComponent implements OnInit {
   constructor(private api: ApiService) {
     this.form = new FormGroup({
       pesel: new FormControl(null),
-      notification_type: new FormControl(null)
+      communication_channel_type: new FormControl(null)
     });
     this.notificationTypes = [
       {
@@ -33,8 +33,8 @@ export class FormPersonalDataComponent implements OnInit {
   }
 
   public submitForm(): void {
-    console.log(this.form.value);
-    this.api.sendPersonalData(this.form.value).subscribe(res => {
+    // console.log(this.form.value);
+    this.api.sendCitizenNotify(this.form.value).subscribe(res => {
       console.log(res);
     });
   }

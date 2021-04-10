@@ -7,6 +7,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatSidenavModule} from '@angular/material/sidenav';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     MatIconModule,
     MatInputModule,
     MatSelectModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSidenavModule
   ],
   exports: [
     MatProgressBarModule,
@@ -28,7 +30,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     MatIconModule,
     MatInputModule,
     MatSelectModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSidenavModule
   ]
 })
 export class MaterialModule { }

@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {CitizenNotifyModel} from '../models/citizen-notify.model';
+import {environment} from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +13,10 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  public sendPersonalData(personalData): Observable<any> {
-    return this.http.post(`${this.backendUrl}/v1/auth/registration-code/generate`, personalData);
+  public sendCitizenNotify(personalData: CitizenNotifyModel): Observable<any> {
+    return this.http.post(`${environment.host}v1/auth/registration/citizen/notify`, personalData);
   }
+
 }
 
 

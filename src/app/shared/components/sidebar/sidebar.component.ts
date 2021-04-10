@@ -12,7 +12,7 @@ import {Subscription} from 'rxjs/internal/Subscription';
   styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent implements OnInit, OnDestroy {
-  @Input() portalVersion: boolean = false;
+  @Input() portalVersion = false;
   public menuItems: { icon: string; label: string; href: string }[];
   public currentStep: string;
   subscriptions: Subscription[] = [];

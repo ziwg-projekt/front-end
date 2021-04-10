@@ -10,7 +10,7 @@
       </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label>Sposób potwierdzenia</mat-label>
-        <mat-select formControlName="notification_type">
+        <mat-select formControlName="communication_channel_type">
           <mat-option *ngFor="let type of notificationTypes" [value]="type.value">
             {{type.name}}
           </mat-option>
