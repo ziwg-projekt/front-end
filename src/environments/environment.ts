@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  mapboxKey: 'pk.eyJ1IjoiaGVzb3lhbTEyOTgiLCJhIjoiY2ttczA2N2ZnMGN6ZDJvcDl4YXpra2l6dCJ9.Z0NQIsA5iUVMHl9_o5jIHg'
+  mapboxKey: 'pk.eyJ1IjoiaGVzb3lhbTEyOTgiLCJhIjoiY2ttczA2N2ZnMGN6ZDJvcDl4YXpra2l6dCJ9.Z0NQIsA5iUVMHl9_o5jIHg',
+  host: 'http://40.112.78.100:8080/api/'
 };
 
 /*
