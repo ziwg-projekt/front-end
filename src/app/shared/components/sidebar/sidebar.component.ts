@@ -14,7 +14,7 @@ export class SidebarComponent implements OnInit {
     this.menuItems = [
       {icon: 'home', label: 'Strona główna', href:  '/registration/main-page'},
       {icon: 'assignment', label: 'Dane osobowe', href:  '/registration/personal-data'},
-      {icon: 'map', label: 'Wybór placówki', href:  '/registration/personal-data'},
+      {icon: 'map', label: 'Wybór placówki', href:  '/registration/map'},
       {icon: 'poll', label: 'Podsumowanie', href:  '/registration/personal-data'},
       {icon: 'done', label: 'Akceptacja', href:  '/registration/personal-data'},
     ];
