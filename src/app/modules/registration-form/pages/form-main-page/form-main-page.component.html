@@ -1,5 +1,7 @@
 <div class="form-main-page-container" fxLayout="row" fxLayout.lt-lg="column" fxLayoutGap="30px">
-  <div class="guide-section" fxFlex="65" fxLayout="column">
+  <div class="guide-section"
+       fxFlex="65" fxFlex.lt-lg="100"
+       fxLayout="column">
     <div class="guide-header" fxFlex="15" fxLayoutAlign="center center">
       <p>Witamy w rejestratorze szczepień!</p>
     </div>
@@ -39,7 +41,7 @@
         </mat-card>
       </mat-card>
     </div>
-    <div fxFlex="55" fxFlex.lt-md="85">
+    <div fxFlex="55" fxFlex.lt-sm="50">
       <mat-card class="guide-card">
         <p>
           <span>1. Zarejestruj się</span> już dziś i zarezerwuj termin szczepienia w dowolnym miejscu.
@@ -54,38 +56,43 @@
       </mat-card>
     </div>
   </div>
-<!--  <div class="info-section" fxFlex="35" fxLayout="column">-->
-<!--    <div class="contact-container" fxFlex="10" fxLayout="row" fxLayoutAlign="center" fxLayoutGap="30px">-->
-<!--      <mat-card class="small-icon-wrapper contact-icon-wrapper" fxLayoutAlign="center center">-->
-<!--        <mat-icon>info</mat-icon>-->
-<!--      </mat-card>-->
-<!--      <mat-card class="contact-bar" fxLayout="row" fxLayoutAlign="space-around center">-->
-<!--        <p>Potrzebujesz pomocy?</p>-->
-<!--        <mat-icon>email</mat-icon>-->
-<!--      </mat-card>-->
+  <div *ngIf="(windowExtended$ | async) === 'xl' || (windowExtended$ | async) === 'lg'"
+    class="info-section" fxFlex="35" fxLayout="column">
+    <div class="contact-container" fxFlex="7"
+         fxLayout="row"
+         fxLayoutAlign="center"
+         fxLayoutGap="30px" fxLayoutGap.lt-xl="10px">
+      <mat-card class="small-icon-wrapper contact-icon-wrapper" fxLayoutAlign="center center">
+        <mat-icon fxLayoutAlign="center center">info</mat-icon>
+      </mat-card>
+      <mat-card class="contact-bar" fxLayout="row" fxLayoutAlign="space-around center">
+        <p>Potrzebujesz pomocy?</p>
+        <mat-icon fxLayoutAlign="center center">email</mat-icon>
+      </mat-card>
 <!--      <img class="contact-image" src="assets/images/doctor.png" alt="doctor">-->
-<!--    </div>-->
-<!--    <div class="news-container" fxFlex="45">-->
-<!--      <div class="news-header" fxLayout="row" fxLayoutAlign="space-around end">-->
-<!--        <h1>Aktualności</h1>-->
-<!--        <div fxLayout="row">-->
-<!--          <p>Zobacz wszystkie</p>-->
-<!--          <mat-icon>navigate_next</mat-icon>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="news-content-container" fxLayout="column" fxLayoutGap="20px">-->
-<!--        <div *ngFor="let item of newsArray" class="news-item" fxLayout="row" fxLayoutGap="20px">-->
-<!--          <div class="news-date">-->
-<!--            <p>{{item.date}}</p>-->
-<!--          </div>-->
-<!--          <p>{{item.label}}-->
-<!--            <br> <span>{{item.labelExtension}}</span></p>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--    <div class="infection-rate-container" fxFlex="40">-->
-<!--      <h1>Aktualna liczba zachorowań</h1>-->
-<!--      <app-line-chart></app-line-chart>-->
-<!--    </div>-->
-<!--  </div>-->
+    </div>
+    <div fxFlex="45">
+      <div class="news-header" fxLayout="row" fxLayoutAlign="space-around end">
+        <h1>Aktualności</h1>
+        <div fxLayout="row">
+          <p>Zobacz wszystkie</p>
+          <mat-icon fxLayoutAlign="center center">navigate_next</mat-icon>
+        </div>
+      </div>
+      <div class="news-content-container" fxLayout="column" fxLayoutGap="20px">
+        <div *ngFor="let item of newsArray" class="news-item" fxLayout="row" fxLayoutGap="5px">
+          <div class="news-date">
+            <p>{{item.date}}</p>
+          </div>
+          <p>{{item.label}}
+            <br> <span>{{item.labelExtension}}</span></p>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="(windowExtended$ | async) === 'xl'"
+         class="infection-rate-container" fxFlex="40">
+      <h1>Aktualna liczba zachorowań</h1>
+      <app-line-chart></app-line-chart>
+    </div>
+  </div>
 </div>

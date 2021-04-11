@@ -11,10 +11,10 @@ import {MediaChange, MediaObserver} from '@angular/flex-layout';
 })
 export class RegistrationFormComponent implements OnInit {
   @ViewChild('drawer') drawer: MatDrawer;
-  public sidenavObserver: Observable<boolean>;
+  public sidenavObserver$: Observable<boolean>;
 
   constructor(public mediaObserver: MediaObserver) {
-    this.sidenavObserver = this.mediaObserver.asObservable()
+    this.sidenavObserver$ = this.mediaObserver.asObservable()
       .pipe(
         filter((changes: MediaChange[]) => changes.length > 0),
         map((changes: MediaChange[]) => changes[0].mqAlias === 'sm' ||

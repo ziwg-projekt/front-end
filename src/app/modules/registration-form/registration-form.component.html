@@ -1,31 +1,14 @@
 <!--<div class="form-container" >-->
 <!--</div>-->
 
-<mat-drawer-container  [hasBackdrop]="false" class="form-container">
-  <mat-drawer #drawer [mode]="'push'" [opened]="!(sidenavObserver | async)">
+<mat-icon *ngIf="(sidenavObserver$ | async)" (click)="drawer.toggle()" class="toggle-menu">menu</mat-icon>
+<mat-drawer-container [hasBackdrop]="false" class="form-container">
+  <mat-drawer #drawer [mode]="'push'" [opened]="!(sidenavObserver$ | async)">
     <div class="sidebar-container">
       <app-sidebar [portalVersion]='false'></app-sidebar>
     </div>
-
   </mat-drawer>
   <mat-drawer-content>
-<!--    <mat-form-field>-->
-<!--      <mat-label>Sidenav mode</mat-label>-->
-<!--      <mat-select #mode value="side">-->
-<!--        <mat-option value="side">Side</mat-option>-->
-<!--        <mat-option value="over">Over</mat-option>-->
-<!--        <mat-option value="push">Push</mat-option>-->
-<!--      </mat-select>-->
-<!--    </mat-form-field>-->
-<!--    <mat-form-field>-->
-<!--      <mat-label>Has backdrop</mat-label>-->
-<!--      <mat-select #hasBackdrop>-->
-<!--        <mat-option>Unset</mat-option>-->
-<!--        <mat-option [value]="true">True</mat-option>-->
-<!--        <mat-option [value]="false">False</mat-option>-->
-<!--      </mat-select>-->
-<!--    </mat-form-field>-->
-<!--    <button mat-raised-button (click)="toggleDrawer()">Toggle drawer</button>-->
     <div class="content-container" ngClass.lt-md="content-container-wide">
       <router-outlet></router-outlet>
     </div>
