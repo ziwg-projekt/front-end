@@ -1,6 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from '../../../../core/services/api.service';
+import {MatDialog} from '@angular/material/dialog';
+import {AuthenticationCodeDialogComponent} from '../../components/authentication-code-dialog/authentication-code-dialog.component';
+import {concatMap} from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {UserCandidateModel} from '../../../../core/models/user-candidate.model';
+import {RegistrationInfoDialogComponent} from '../../components/registration-info-dialog/registration-info-dialog.component';
 
 @Component({
   selector: 'app-form-personal-data',
@@ -9,13 +15,16 @@ import {ApiService} from '../../../../core/services/api.service';
 })
 export class FormPersonalDataComponent implements OnInit {
   public form: FormGroup;
-  value: any;
-  public notificationTypes: {name: string, value: number}[];
+  public notificationTypes: { name: string, value: number }[];
+  public spinnerActive = false;
 
-  constructor(private api: ApiService) {
+  constructor(
+    private api: ApiService,
+    private dialog: MatDialog
+  ) {
     this.form = new FormGroup({
-      pesel: new FormControl(null),
-      communication_channel_type: new FormControl(null)
+      pesel: new FormControl('78101134985', [Validators.required]),
+      communication_channel_type: new FormControl(null, [Validators.required])
     });
     this.notificationTypes = [
       {
@@ -33,10 +42,39 @@ export class FormPersonalDataComponent implements OnInit {
   }
 
   public submitForm(): void {
-    // console.log(this.form.value);
-    this.api.sendCitizenNotify(this.form.value).subscribe(res => {
-      console.log(res);
-    });
+    if (this.form.valid) {
+      let dialogRef;
+      this.spinnerActive = true;
+      this.api.sendCitizenNotify(this.form.value).pipe(
+        concatMap((res: { verify_api_path: string }): Observable<UserCandidateModel> => {
+          dialogRef = this.dialog.open(AuthenticationCodeDialogComponent, {
+            width: '250px',
+            data: {
+              address: res.verify_api_path
+            }
+          });
+          this.spinnerActive = false;
+          return dialogRef.componentInstance.authenticationConfirmed;
+        })
+      ).subscribe((confirmedUser: UserCandidateModel) => {
+        console.log(confirmedUser);
+        dialogRef.close();
+      }, error => {
+        this.spinnerActive = false;
+        let errorInfo;
+        error.status === 404 ? errorInfo = {
+              mainInfo: 'Niepoprawny nr. PESEL',
+              extendInfo: 'Spróbuj ponownie'
+            } : errorInfo = {
+            mainInfo: 'Błąd',
+            extendInfo: 'Spróbuj ponownie'
+          };
+        this.dialog.open(RegistrationInfoDialogComponent, {
+          width: '350px',
+          data: errorInfo
+        });
+      });
+    }
   }
 
 }

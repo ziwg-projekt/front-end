@@ -12,12 +12,14 @@ import {ChartsModule} from 'ng2-charts';
 import { LineChartComponent } from './components/line-chart/line-chart.component';
 import { FormMapStageComponent } from './pages/form-map-stage/form-map-stage.component';
 import { MapComponent } from './components/map/map.component';
+import { AuthenticationCodeDialogComponent } from './components/authentication-code-dialog/authentication-code-dialog.component';
+import { RegistrationInfoDialogComponent } from './components/registration-info-dialog/registration-info-dialog.component';
 
 
 
 @NgModule({
   declarations: [RegistrationFormComponent, FormMainPageComponent, FormPersonalDataComponent, LineChartComponent,
-    FormMapStageComponent, MapComponent],
+    FormMapStageComponent, MapComponent, AuthenticationCodeDialogComponent, RegistrationInfoDialogComponent],
   imports: [
     CommonModule,
     RegistrationFormRoutingModule,

@@ -1,5 +1,5 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {AuthService} from 'src/app/core/services/auth.service';
 import {LoginDialogComponent} from '../login-dialog/login-dialog.component';
@@ -21,7 +21,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
     private router: Router,
     public dialog: MatDialog,
     private authService: AuthService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private route: ActivatedRoute
   ) {
   }
 
@@ -39,7 +40,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     }
   }
 
-  initPortalItems() {
+  private initPortalItems(): void {
     this.menuItems = [
       {icon: 'security', label: 'Szczepionki', href: '/portal/vaccines'},
       {icon: 'people', label: 'Pacjenci', href: '/portal/patients'},
@@ -47,9 +48,13 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.currentStep = 'Szczepionki';
   }
 
-  initFormItems() {
+  private initFormItems(): void {
     this.menuItems = [
-      {icon: 'home', label: 'Strona główna', href: '/registration/main-page'},
+      {
+        icon: 'home',
+        label: 'Strona główna',
+        href: '/registration/main-page'
+      },
       {
         icon: 'assignment',
         label: 'Dane osobowe',
@@ -71,7 +76,17 @@ export class SidebarComponent implements OnInit, OnDestroy {
         href: '/registration/personal-data',
       },
     ];
-    this.currentStep = 'Strona główna';
+    this.currentStep = this.checkActualStep();
+  }
+
+  private checkActualStep(): string {
+    const actualRouteEnd = this.route.snapshot.firstChild.routeConfig.path;
+    for (const item of this.menuItems) {
+      if (item.href.includes(actualRouteEnd)) {
+        return item.label;
+      }
+    }
+    return this.menuItems[0].label;
   }
 
   public navigate(route: string): void {
