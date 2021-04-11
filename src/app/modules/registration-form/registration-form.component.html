@@ -2,7 +2,7 @@
 <!--</div>-->
 
 <mat-drawer-container  [hasBackdrop]="false" class="form-container">
-  <mat-drawer #drawer [mode]="'side'">
+  <mat-drawer #drawer [mode]="'push'" [opened]="!(sidenavObserver | async)">
     <div class="sidebar-container">
       <app-sidebar [portalVersion]='false'></app-sidebar>
     </div>
@@ -25,6 +25,9 @@
 <!--        <mat-option [value]="false">False</mat-option>-->
 <!--      </mat-select>-->
 <!--    </mat-form-field>-->
-<!--    <button mat-raised-button (click)="drawer.toggle()">Toggle drawer</button>-->
+<!--    <button mat-raised-button (click)="toggleDrawer()">Toggle drawer</button>-->
+    <div class="content-container" ngClass.lt-md="content-container-wide">
+      <router-outlet></router-outlet>
+    </div>
   </mat-drawer-content>
 </mat-drawer-container>

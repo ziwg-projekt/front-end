@@ -4,15 +4,26 @@
   height: 100%;
   width: 100%;
   padding: 36px;
+  overflow-y: hidden;
+
+  @media(max-width: 450px) {
+    padding: 30px 10px;
+  }
 }
 
 .guide-header {
   font-family: Montserrat-SemiBold, serif;
-  font-size: 46px;
+  font-size: clamp(1.3rem, 2.25vw, 3rem);
+  margin: 0;
   color: #42427d;
+  @media(max-width: 450px) {
+    text-align: center;
+  }
 }
 
 .guide-counter-container {
+  min-width: 300px;
+  height: 200px;
   .guide-counter-card {
     height: 80%;
     padding: 0;
@@ -26,6 +37,11 @@
   .guide-right-card {
     border-radius: 10px 50px 10px 50px;
     background-color: $color-light-pink;
+  }
+
+  @media(max-width: 450px) {
+    text-align: center;
+    margin-bottom: 25px;
   }
 }
 
@@ -62,23 +78,27 @@
     color: $color-purple;
     font-weight: bold;
     margin: 0;
+    font-size: clamp(1.2rem, 1.5vw, 2rem);
   }
 
   p {
     color: $color-purple;
     margin: 0;
+    font-size: clamp(1rem, 1.2vw, 2.5rem);
   }
 }
 
 .guide-card {
   //height: calc(100% - 60px);
+  height: 100%;
+  overflow-y: auto;
   width: calc(100% - 60px);
   padding: 30px;
   border-radius: 60px;
   background-color: $color-light-purple;
 
   p {
-    font-size: 32px;
+    font-size: clamp(1.3rem, 2vw, 3rem);
     color: $color-dark-blue;
     font-weight: lighter;
     line-height: 1.3;

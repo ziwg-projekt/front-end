@@ -5,7 +5,7 @@ import { PortalGuard } from './core/guards/portal.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/registration',
+    redirectTo: '/registration/main-page',
     pathMatch: 'full'
   },
   {

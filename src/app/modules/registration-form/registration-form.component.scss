@@ -6,19 +6,18 @@
 }
 
 .content-container {
+  height: 100%;
+  width: calc(100% - 300px);
   background-color: $color-white;
   border-radius: 60px;
 }
 
-.sidebar-container {
-  height: 100%;
+.content-container-wide {
+  width: max(100%, 320px) !important;
 }
 
-.example-container {
-  width: 400px;
-  height: 200px;
-  margin: 12px;
-  border: 1px solid #555;
+.sidebar-container {
+  height: 100%;
 }
 
 mat-drawer-container {
@@ -26,18 +25,21 @@ mat-drawer-container {
 }
 
 mat-drawer-content {
-  padding: 12px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   //background-color: rgba(0, 0, 0, 0) !important;
-
 }
 
 mat-drawer {
   background-color: rgba(0, 0, 0, 0);
+  width: 300px;
 }
 
 .mat-drawer.mat-drawer-push {
   background-color: rgba(0, 0, 0, 0);
+}
+
+.mat-drawer:not(.mat-drawer-side) {
+  box-shadow: none;
 }
