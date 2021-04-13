@@ -10,24 +10,67 @@
     fxLayout="column"
     fxLayoutAlign="start center"
   >
+    <h2>Wyszukiwanie pacjentów</h2>
     <mat-form-field apperance="outline" class="search-input">
       <mat-label>Pesel pacjenta</mat-label>
-      <input matInput /><button mat-button matPrefix mat-icon-button>
-        <mat-icon>search</mat-icon>
+
+      <input matInput [formControl]="personalId" />
+
+      <button mat-button matSuffix mat-icon-button (click)="resetForms()">
+        <mat-icon>close</mat-icon>
       </button>
+
+      <button mat-button matSuffix (click)="searchPatient()">
+        <mat-icon>search</mat-icon> Szukaj
+      </button>
+      <mat-error>Błędny numer PESEL</mat-error>
     </mat-form-field>
+    <mat-slide-toggle>Rejestracja nowego użytkownika</mat-slide-toggle>
 
-    <button>Dodaj nowego pacjenta</button>
-
-    <form><h4>Dane pacjenta</h4>
-    email
-    pesel
-    imie i nazwisko
+    <form
+      [formGroup]="citizenForm"
+      fxLayout="column"
+      fxLayoutAlign="space-between center"
+    >
+      <h4>Dane pacjenta</h4>
+      <mat-form-field>
+        <mat-label>Imię</mat-label>
+        <input matInput type="text" formControlName="name" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Nazwisko</mat-label>
+        <input matInput type="text" formControlName="surname" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput type="text" formControlName="email" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>PESEL</mat-label>
+        <input matInput type="text" formControlName="pesel" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Nr telefonu</mat-label>
+        <input matInput type="text" formControlName="phone_number" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Adres</mat-label>
+        <input matInput type="text" formControlName="address" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Status</mat-label>
+        <input matInput type="text" formControlName="state" readonly />
+      </mat-form-field>
+      button
     </form>
   </div>
-  <div fxFlex.gt-md="50" 
-  fxLayout="column"
-  fxLayoutAlign="start center">
+  <div
+    fxFlex.gt-md="50"
+    fxLayout="column"
+    fxLayoutAlign="start center"
+    *ngIf="appointments$ | async as appointments"
+  >
     Terminy szczepień pacjenta
+    <div>{{ appointments | json }}</div>
   </div>
 </div>
