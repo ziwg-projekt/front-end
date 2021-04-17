@@ -1,8 +1,10 @@
+
 import { CitizenStateType } from '../enums/citizen-state.enum';
+import { Address } from './address';
 import { Hospital } from './hospital';
 
 export interface Citizen {
-  address: any;
+  address: Address;
   email: string;
   hospital: Hospital;
   name: string;

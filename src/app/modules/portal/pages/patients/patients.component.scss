@@ -1,15 +1,40 @@
 @import "src/assets/scss/colors";
+@import "../../portal.component.scss";
 
-.main-container {
-  height: 100%;
-  width: 100%;
-  padding: 36px;
-  overflow-y: auto;
+.search-button {
+  color: $color-purple;
 }
-.citizien-container {
-  background-color: silver;
+.search-input {
+  width: 60%;
+}
+.search-input,
+.new-user-container {
+  margin: 1em;
+}
+form {
+  min-height: 800px;
+  overflow-y: auto;
+  min-width: 100%;
+  border-radius: 60px;
   padding: 1em;
-  .search-input {
-    width: 50%;
+
+  .title-container {
+    font-size: 20px;
+  }
+}
+.appointments-container {
+  width: 100%;
+  padding: 1em;
+  .title-container {
+    font-size: 20px;
+  }
+  .title-container:last-child {
+    font-size: 16px;
+  }
+  button {
+    margin: 1em;
+    mat-icon{
+      margin-right:5px;
+    }
   }
 }

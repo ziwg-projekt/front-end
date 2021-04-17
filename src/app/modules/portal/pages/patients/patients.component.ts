@@ -10,6 +10,7 @@ import { Observable, Subscription } from 'rxjs';
 import { CitizenStateType } from 'src/app/core/enums/citizen-state.enum';
 import { Citizen } from 'src/app/core/models/citizen';
 import { CitizensService } from 'src/app/core/services/citizens.service';
+import { PortalService } from 'src/app/core/services/portal.service';
 
 @Component({
   selector: 'app-patients',
@@ -24,10 +25,13 @@ export class PatientsComponent implements OnInit, OnDestroy {
   citizenForm: FormGroup;
   subscriptions: Subscription[] = [];
   appointments$: Observable<any>;
+  enableForm: boolean = false;
+
   constructor(
     private citizensService: CitizensService,
     private toastr: ToastrService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private portalService: PortalService
   ) {}
 
   ngOnDestroy(): void {
@@ -45,8 +49,10 @@ export class PatientsComponent implements OnInit, OnDestroy {
       console.log(this.personalId.valid);
       this.subscriptions.push(
         this.citizensService.getPatient(this.personalId.value).subscribe(
+          //2888924742
           (c) => {
             this.patchValueOfCitizen(c);
+            this.enableForm = true;
             this.appointments$ = this.citizensService.getPatientAppointments(
               this.personalId.value
             );
@@ -70,15 +76,48 @@ export class PatientsComponent implements OnInit, OnDestroy {
       surname: [undefined],
       pesel: [undefined],
       phone_number: [undefined],
+      city: [undefined],
+      street: [undefined],
+      street_number: [undefined],
       state: [CitizenStateType.Waiting],
     });
   }
-  patchValueOfCitizen(citizen: Citizen) {
-    this.citizenForm.patchValue(citizen);
+
+  submitForm() {
+    if (!this.personalId.value) {
+      console.log('dodaj nowego');
+    } else {
+      console.log('zmiana');
+    }
   }
 
-  resetForms() {
+  patchValueOfCitizen(citizen: Citizen) {
+    this.citizenForm.patchValue(citizen);
+    this.citizenForm.get('city').setValue(citizen.address.city);
+    this.citizenForm.get('street').setValue(citizen.address.street);
+    this.citizenForm.get('street_number').setValue(citizen.address.street_number);
+  }
+
+  newUserToggle() {
+    if ((this.enableForm && this.personalId.enabled) || !this.enableForm) {
+      this.enableForm = true;
+      this.personalId.disable();
+    } else if (this.enableForm && !this.personalId.enabled) {
+      this.enableForm = false;
+      this.personalId.enable();
+    }
+    this.resetValues();
+  }
+
+  resetSearch() {
+    if (this.personalId.enabled) {
+      this.resetValues();
+      this.enableForm = false;
+    }
+  }
+  resetValues() {
+    this.personalId.reset();
     this.citizenForm.reset();
-    this.personalId.setValue(null);
+    this.appointments$ = null;
   }
 }

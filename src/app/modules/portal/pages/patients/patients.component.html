@@ -1,76 +1,112 @@
-<div
-  class="main-container"
-  fxLayout.gt-md="row"
-  fxLayout="column"
-  fxLayoutGap="30px"
->
-  <div
-    class="citizien-container"
-    fxFlex.gt-md="50"
-    fxLayout="column"
-    fxLayoutAlign="start center"
-  >
-    <h2>Wyszukiwanie pacjentów</h2>
-    <mat-form-field apperance="outline" class="search-input">
+<div class="main-container" fxLayout="column" fxLayoutAlign="start">
+  <div fxFlex.gt-md="100" fxLayout="column" fxLayoutAlign="start center">
+    <span class="title-container">Baza pacjentów</span>
+    <mat-form-field class="search-input">
       <mat-label>Pesel pacjenta</mat-label>
-
       <input matInput [formControl]="personalId" />
-
-      <button mat-button matSuffix mat-icon-button (click)="resetForms()">
+      <button
+        mat-button
+        matSuffix
+        mat-icon-button
+        color="warn"
+        (click)="resetSearch()"
+      >
         <mat-icon>close</mat-icon>
       </button>
 
-      <button mat-button matSuffix (click)="searchPatient()">
+      <button
+        mat-button
+        matSuffix
+        class="search-button"
+        (click)="searchPatient()"
+      >
         <mat-icon>search</mat-icon> Szukaj
       </button>
       <mat-error>Błędny numer PESEL</mat-error>
     </mat-form-field>
-    <mat-slide-toggle>Rejestracja nowego użytkownika</mat-slide-toggle>
-
-    <form
-      [formGroup]="citizenForm"
-      fxLayout="column"
-      fxLayoutAlign="space-between center"
+    <mat-slide-toggle class="new-user-container" (click)="newUserToggle()"
+      >Rejestracja nowego użytkownika</mat-slide-toggle
     >
-      <h4>Dane pacjenta</h4>
-      <mat-form-field>
-        <mat-label>Imię</mat-label>
-        <input matInput type="text" formControlName="name" />
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Nazwisko</mat-label>
-        <input matInput type="text" formControlName="surname" />
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Email</mat-label>
-        <input matInput type="text" formControlName="email" />
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>PESEL</mat-label>
-        <input matInput type="text" formControlName="pesel" />
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Nr telefonu</mat-label>
-        <input matInput type="text" formControlName="phone_number" />
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Adres</mat-label>
-        <input matInput type="text" formControlName="address" />
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Status</mat-label>
-        <input matInput type="text" formControlName="state" readonly />
-      </mat-form-field>
-      button
-    </form>
   </div>
-  <div
-    fxFlex.gt-md="50"
-    fxLayout="column"
-    fxLayoutAlign="start center"
-    *ngIf="appointments$ | async as appointments"
-  >
-    Terminy szczepień pacjenta
-    <div>{{ appointments | json }}</div>
+  <div fxLayout.gt-md="row" fxLayoutGap="30px">
+    <div class="form-container" fxLayoutAlign="start center" fxFlex.gt-md="50">
+      <form
+        *ngIf="enableForm"
+        [formGroup]="citizenForm"
+        fxLayout="column"
+        fxLayoutAlign="space-between center"
+      >
+        <span class="title-container">Dane pacjenta</span>
+        <mat-form-field appearance="outline">
+          <mat-label>Imię</mat-label>
+          <input matInput type="text" formControlName="name" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Nazwisko</mat-label>
+          <input matInput type="text" formControlName="surname" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput type="text" formControlName="email" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>PESEL</mat-label>
+          <input matInput type="text" formControlName="pesel" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Nr telefonu</mat-label>
+          <input matInput type="text" formControlName="phone_number" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Miasto</mat-label>
+          <input matInput type="text" formControlName="city" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Ulica</mat-label>
+          <input matInput type="text" formControlName="street" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Numer mieszkania</mat-label>
+          <input matInput type="text" formControlName="street_number" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" *ngIf="!personalId.value">
+          <mat-label>Status</mat-label>
+          <input matInput type="text" formControlName="state" readonly />
+        </mat-form-field>
+        <button
+          mat-raised-button
+          type="button"
+          class="primary-button"
+          (click)="submitForm()"
+        >
+          <span *ngIf="personalId.value">Edytuj</span
+          ><span *ngIf="!personalId.value">Dodaj</span>
+        </button>
+      </form>
+    </div>
+    <div
+      fxFlex.gt-md="50"
+      fxLayout="column"
+      fxLayoutAlign="start center"
+      *ngIf="appointments$ | async as appointments"
+      class="appointments-container"
+    >
+      <span class="title-container">Terminy szczepień pacjenta</span>
+      <button mat-raised-button type="button" class="primary-button">
+        <mat-icon>add</mat-icon>Dodaj termin szczepienia
+      </button>
+      <div
+        class="appointment-view-container"
+        *ngIf="appointments.length > 0; else noAppointments"
+      >
+        {{ appointments | json }}
+      </div>
+
+      <ng-template #noAppointments
+        ><span class="title-container"
+          >Użytkownik oczekuje na pierwszy termin</span
+        ></ng-template
+      >
+    </div>
   </div>
 </div>
