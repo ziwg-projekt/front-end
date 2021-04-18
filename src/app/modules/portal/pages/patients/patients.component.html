@@ -28,8 +28,8 @@
       >Rejestracja nowego użytkownika</mat-slide-toggle
     >
   </div>
-  <div fxLayout.gt-md="row" fxLayoutGap="30px">
-    <div class="form-container" fxLayoutAlign="start center" fxFlex.gt-md="50">
+  <div fxLayout="column" fxLayout.gt-md="row" fxLayoutGap="30px">
+    <div class="form-container" fxLayoutAlign="start center"  fxFlex="100" fxFlex.gt-md="50">
       <form
         *ngIf="enableForm"
         [formGroup]="citizenForm"
@@ -85,6 +85,7 @@
       </form>
     </div>
     <div
+      fxFlex="100"
       fxFlex.gt-md="50"
       fxLayout="column"
       fxLayoutAlign="start center"
@@ -92,14 +93,14 @@
       class="appointments-container"
     >
       <span class="title-container">Terminy szczepień pacjenta</span>
-      <button mat-raised-button type="button" class="primary-button">
+      <button mat-raised-button type="button" class="primary-button" (click)="openNewAppointmentDialog()">
         <mat-icon>add</mat-icon>Dodaj termin szczepienia
       </button>
       <div
         class="appointment-view-container"
         *ngIf="appointments.length > 0; else noAppointments"
       >
-        {{ appointments | json }}
+        <app-appointment-view *ngFor="let a of appointments" [appointment]="a" (click)="openAppointmentDialog(a)"></app-appointment-view>
       </div>
 
       <ng-template #noAppointments
