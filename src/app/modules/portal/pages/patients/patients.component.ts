@@ -25,7 +25,7 @@ import { AppointmentDto } from 'src/app/core/models/appointment-dto';
   styleUrls: ['./patients.component.scss'],
 })
 export class PatientsComponent implements OnInit, OnDestroy {
-  personalId: FormControl = new FormControl(2888924742, [
+  personalId: FormControl = new FormControl(undefined, [
     Validators.required,
     Validators.pattern(/^[0-9]\d*$/),
   ]);
@@ -154,17 +154,10 @@ export class PatientsComponent implements OnInit, OnDestroy {
     this.appointments$ = null;
   }
 
-  getAppointments(a?: Appointment) {
-    this.appointments$ = this.portalService
-      .getPatientAppointments(this.currentCitizen.pesel)
-      .pipe(
-        map((array) => {
-          if (a) {
-            array.push(a);
-          }
-          return array;
-        })
-      );
+  getAppointments() {
+    this.appointments$ = this.portalService.getPatientAppointments(
+      this.currentCitizen.pesel
+    );
   }
   openNewAppointmentDialog() {
     const dialogRef = this.dialog.open(NewAppointmentDialogComponent, {
@@ -186,7 +179,7 @@ export class PatientsComponent implements OnInit, OnDestroy {
         };
 
         this.portalService.addAppointment(appointmentDto).subscribe((a) => {
-          this.getAppointments(data);
+          this.getAppointments();
         });
       }
     });
@@ -202,14 +195,6 @@ export class PatientsComponent implements OnInit, OnDestroy {
         appointment: a,
       },
     });
-    dialogRef.afterClosed().subscribe((data: Appointment) => {
-      //  if (data && data.appointment) {
-      // data.date = new Date(data.date);
-      // data.state = AppointmentState.Cancelled;
-      //  this.portalService.addAppointment(data).subscribe(a=>{
-      // this.getAppointments(data);
-      // })
-      // }
-    });
+    dialogRef.afterClosed().subscribe((data: Appointment) => {});
   }
 }
