@@ -1,0 +1,54 @@
+<div class="form-map-stage-container" fxLayout="row">
+  <div class="map-wrapper" fxLayout="column" fxFlex="65">
+    <div class="map-wrapper-header" fxFlex="15" fxLayoutAlign="start center">
+      <p>Wybierz placówkę</p>
+    </div>
+    <div class="map-container-header" fxFlex="7">
+      <mat-card fxLayoutAlign="center center">
+        <p>Mapa</p>
+      </mat-card>
+    </div>
+    <div class="map-container" fxFlex="70">
+      <app-map></app-map>
+    </div>
+  </div>
+  <div class="info-container" fxFlex="35" fxLayout="column">
+    <div class="contact-container" fxFlex="10" fxLayout="row" fxLayoutAlign="center" fxLayoutGap="30px">
+      <mat-card class="small-icon-wrapper contact-icon-wrapper" fxLayoutAlign="center center">
+        <mat-icon>info</mat-icon>
+      </mat-card>
+      <mat-card class="contact-bar" fxLayout="row" fxLayoutAlign="space-around center">
+        <p>Potrzebujesz pomocy?</p>
+        <mat-icon>email</mat-icon>
+      </mat-card>
+      <img class="contact-image" src="assets/images/doctor.png" alt="doctor">
+    </div>
+    <div class="vaccine-info-container" fxFlex="90" fxLayoutAlign="center center">
+      <mat-card class="vaccine-info-content-container" fxLayout="column"  fxLayoutAlign="start center">
+        <div class="vaccine-info-header">
+          <h1>Miejsce szczepienia</h1>
+        </div>
+        <img src="assets/images/przychodnia.jpg" alt="przychodnia">
+        <div class="contact-details-wrapper" fxLayout="row" fxLayoutGap="30px">
+          <div class="contact-details-labels">
+            <p>Nazwa placówki</p>
+            <p>Miejscowość</p>
+            <p>Adres</p>
+            <p>Liczba osób w kolejce</p>
+            <p>Numer telefonu</p>
+            <p>Najbliższa data szczepienia</p>
+          </div>
+          <div class="contact-details-items" fxLayout="column" fxLayoutAlign="start center">
+            <p>Szpital Akademicki</p>
+            <p>Wrocław</p>
+            <p>ul. Koszarowa 24</p>
+            <p>2 415</p>
+            <p>+48 612 451 884</p>
+            <p>24.08.2021r.</p>
+          </div>
+        </div>
+        <button mat-raised-button>Wybierz</button>
+      </mat-card>
+    </div>
+  </div>
+</div>
