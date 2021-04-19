@@ -1,29 +1,26 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { VaccineState } from 'src/app/core/enums/vaccine-state.enum';
-import { CompaniesService } from 'src/app/core/services/companies.service';
-import { VaccinesService } from 'src/app/core/services/vaccines.service';
-import { HospitalsService } from 'src/app/core/services/hospitals.service';
 import { Statistic } from 'src/app/core/models/statistic';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { UsersService } from 'src/app/core/services/users.service';
 import { Hospital } from 'src/app/core/models/hospital';
 import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { VaccineType } from 'src/app/core/enums/vaccine-type.enum';
+import { PortalService } from 'src/app/core/services/portal.service';
 
 @Component({
   selector: 'app-vaccines',
   templateUrl: './vaccines.component.html',
   styleUrls: ['./vaccines.component.scss'],
 })
-export class VaccinesComponent implements OnInit, OnDestroy {
+export class VaccinesComponent implements OnDestroy {
   vaccineFormGroup: FormGroup;
   subscriptions: Subscription[] = [];
   hospital: Hospital;
-  companies$ = this.companiesService.getCompanies();
+  companies$ = this.portalService.getCompanies();
   statistics$: Observable<any[]>;
   statisticsTypes: Statistic[] = [
     { type: VaccineState.Available, value: 'Dostępne szczepionki' },
@@ -39,15 +36,12 @@ export class VaccinesComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private vaccinesService: VaccinesService,
-    private companiesService: CompaniesService,
-    private hospitalsService: HospitalsService,
     private authService: AuthService,
-    private usersService: UsersService,
+    private portalService: PortalService,
     private toastr: ToastrService
   ) {
     this.subscriptions.push(
-      this.usersService.getUser(this.authService.userId).subscribe((u) => {
+      this.portalService.getUser(this.authService.userId).subscribe((u) => {
         this.hospital = u.hospital;
         this.getStatistics(this.hospital.id);
         this.initFormGroup();
@@ -61,10 +55,6 @@ export class VaccinesComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
-    this.initFormGroup();
-  }
-
   initFormGroup() {
     this.vaccineFormGroup = this.fb.group({
       code: [null, Validators.required],
@@ -76,10 +66,9 @@ export class VaccinesComponent implements OnInit, OnDestroy {
   }
 
   addVaccine() {
-    console.log(this.vaccineFormGroup.value);
     if (this.vaccineFormGroup.valid) {
       this.subscriptions.push(
-        this.vaccinesService.addVacine(this.vaccineFormGroup.value).subscribe(
+        this.portalService.addVacine(this.vaccineFormGroup.value).subscribe(
           (data) => {
             this.initFormGroup();
             this.toastr.success('Dodano szczepionkę');
@@ -97,7 +86,7 @@ export class VaccinesComponent implements OnInit, OnDestroy {
   }
 
   getStatistics(id: number) {
-    this.statistics$ = this.hospitalsService.getStatistics(id).pipe(
+    this.statistics$ = this.portalService.getStatistics(id).pipe(
       map((s) => {
         return this.sortStatistics(s);
       })
