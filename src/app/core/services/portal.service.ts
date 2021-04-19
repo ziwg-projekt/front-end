@@ -35,6 +35,9 @@ export class PortalService {
   }
 
   editPatientData(pesel: string, citizenForm): Observable<Citizen> {
+    citizenForm.address.city = citizenForm.city;
+    citizenForm.address.street = citizenForm.street;
+    citizenForm.address.street_number = citizenForm.street_number;
     return this.http.put<Citizen>(
       this.host + `v1/citizens/${pesel}`,
       citizenForm

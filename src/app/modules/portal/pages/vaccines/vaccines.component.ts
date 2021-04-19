@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs/internal/Subscription';
@@ -16,7 +16,7 @@ import { PortalService } from 'src/app/core/services/portal.service';
   templateUrl: './vaccines.component.html',
   styleUrls: ['./vaccines.component.scss'],
 })
-export class VaccinesComponent implements OnDestroy {
+export class VaccinesComponent implements OnDestroy, OnInit {
   vaccineFormGroup: FormGroup;
   subscriptions: Subscription[] = [];
   hospital: Hospital;
@@ -43,10 +43,13 @@ export class VaccinesComponent implements OnDestroy {
     this.subscriptions.push(
       this.portalService.getUser(this.authService.userId).subscribe((u) => {
         this.hospital = u.hospital;
-        this.getStatistics(this.hospital.id);
         this.initFormGroup();
+        this.getStatistics(this.hospital.id);
       })
     );
+  }
+  ngOnInit(): void {
+    this.initFormGroup();
   }
 
   ngOnDestroy(): void {

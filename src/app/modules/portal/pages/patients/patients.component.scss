@@ -40,11 +40,6 @@ form {
 
   .appointment-view-container {
     max-height: 180px;
-    margin: 20px;
     cursor: pointer;
-  }
-  .appointment-view-container:hover {
-    transform: scale(1.03);
-    transition: 0.5s;
   }
 }
