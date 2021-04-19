@@ -1,0 +1,113 @@
+<div class="main-container" fxLayout="column" fxLayoutAlign="start">
+  <div fxFlex.gt-md="100" fxLayout="column" fxLayoutAlign="start center">
+    <span class="title-container">Baza pacjentów</span>
+    <mat-form-field class="search-input">
+      <mat-label>Pesel pacjenta</mat-label>
+      <input matInput [formControl]="personalId" />
+      <button
+        mat-button
+        matSuffix
+        mat-icon-button
+        color="warn"
+        (click)="resetSearch()"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+
+      <button
+        mat-button
+        matSuffix
+        class="search-button"
+        (click)="searchPatient()"
+      >
+        <mat-icon>search</mat-icon> Szukaj
+      </button>
+      <mat-error>Błędny numer PESEL</mat-error>
+    </mat-form-field>
+    <mat-slide-toggle class="new-user-container" (click)="newUserToggle()"
+      >Rejestracja nowego użytkownika</mat-slide-toggle
+    >
+  </div>
+  <div fxLayout="column" fxLayout.gt-md="row" fxLayoutGap="30px">
+    <div class="form-container" fxLayoutAlign="start center"  fxFlex="100" fxFlex.gt-md="50">
+      <form
+        *ngIf="enableForm"
+        [formGroup]="citizenForm"
+        fxLayout="column"
+        fxLayoutAlign="space-between center"
+      >
+        <span class="title-container">Dane pacjenta</span>
+        <mat-form-field appearance="outline">
+          <mat-label>Imię</mat-label>
+          <input matInput type="text" formControlName="name" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Nazwisko</mat-label>
+          <input matInput type="text" formControlName="surname" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput type="text" formControlName="email" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>PESEL</mat-label>
+          <input matInput type="text" formControlName="pesel" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Nr telefonu</mat-label>
+          <input matInput type="text" formControlName="phone_number" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Miasto</mat-label>
+          <input matInput type="text" formControlName="city" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Ulica</mat-label>
+          <input matInput type="text" formControlName="street" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Numer mieszkania</mat-label>
+          <input matInput type="text" formControlName="street_number" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" *ngIf="!personalId.value">
+          <mat-label>Status</mat-label>
+          <input matInput type="text" formControlName="state" readonly />
+        </mat-form-field>
+        <button
+          mat-raised-button
+          type="button"
+          class="primary-button"
+          (click)="submitForm()"
+        >
+          <span *ngIf="personalId.value">Edytuj</span
+          ><span *ngIf="!personalId.value">Dodaj</span>
+        </button>
+      </form>
+    </div>
+    <div
+      fxFlex="100"
+      fxFlex.gt-md="50"
+      fxLayout="column"
+      fxLayoutAlign="start center"
+      *ngIf="appointments$ | async as appointments"
+      class="appointments-container"
+    >
+      <span class="title-container">Terminy szczepień pacjenta</span>
+      <button mat-raised-button type="button" class="primary-button" (click)="openNewAppointmentDialog()">
+        <mat-icon>add</mat-icon>Dodaj termin szczepienia
+      </button>
+      <div
+        class="appointment-view-container"
+        *ngIf="appointments.length > 0; else noAppointments"
+      >
+        <app-appointment-view *ngFor="let a of appointments" [appointment]="a" (click)="openAppointmentDialog(a)"></app-appointment-view>
+      </div>
+
+      <ng-template #noAppointments
+        ><span class="title-container"
+          >Użytkownik oczekuje na pierwszy termin</span
+        ></ng-template
+      >
+    </div>
+  </div>
+</div>

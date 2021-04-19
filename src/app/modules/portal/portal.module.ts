@@ -8,9 +8,20 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PortalComponent } from './portal.component';
 import { VaccinesComponent } from './pages/vaccines/vaccines.component';
 import { PortalRoutingModule } from './portal-routing/portal-routing.module';
-
+import { PatientsComponent } from './pages/patients/patients.component';
+import { AppointmentViewComponent } from './pages/appointments/appointment-view/appointment-view.component';
+import { NewAppointmentDialogComponent } from './pages/appointments/new-appointment-dialog/new-appointment-dialog.component';
+import { AppointmentStateTranslatorPipe } from 'src/app/core/pipes/appointment-state-translator.pipe';
+import { DatePipe } from '@angular/common';
 @NgModule({
-  declarations: [PortalComponent, VaccinesComponent],
+  declarations: [
+    PortalComponent,
+    VaccinesComponent,
+    PatientsComponent,
+    AppointmentViewComponent,
+    NewAppointmentDialogComponent,
+    AppointmentStateTranslatorPipe,
+  ],
   imports: [
     CommonModule,
     FlexModule,
@@ -18,8 +29,9 @@ import { PortalRoutingModule } from './portal-routing/portal-routing.module';
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    PortalRoutingModule
+    PortalRoutingModule,
   ],
   exports: [PortalComponent],
+  providers: [DatePipe],
 })
 export class PortalModule {}
