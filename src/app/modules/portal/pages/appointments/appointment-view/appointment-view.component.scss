@@ -1,0 +1,39 @@
+@import "src/assets/scss/colors";
+@import "../../../portal.component.scss";
+
+.appointment-conatiner {
+  width: 100%;
+
+  
+  .title-container {
+    font-size: 20px;
+  }
+  .card-content-container {
+      div{
+          margin:10px 0;
+      }
+    .title-container {
+      font-size: 1rem;
+      text-align: left;
+    }
+    .details-container{
+        font-size: 1rem;
+        font-weight: bold;
+    }
+  }
+  .icons-container{
+      margin-left: auto;
+  }
+}
+
+.border-confirmed{
+    border-left: 5px solid $color-purple;
+}
+
+.border-cancelled{
+    border-left: 5px solid red;
+}
+
+.border-finished{
+    border-left: 5px solid green;
+}

@@ -1,0 +1,50 @@
+@import "src/assets/scss/colors";
+@import "../../portal.component.scss";
+
+.search-button {
+  color: $color-purple;
+}
+.search-input {
+  width: 60%;
+}
+.search-input,
+.new-user-container {
+  margin: 1em;
+}
+form {
+  min-height: 800px;
+  overflow-y: auto;
+  min-width: 100%;
+  border-radius: 60px;
+  padding: 1em;
+
+  .title-container {
+    font-size: 20px;
+  }
+}
+.appointments-container {
+  width: 100%;
+  padding: 1em;
+  .title-container {
+    font-size: 20px;
+  }
+  .title-container:last-child {
+    font-size: 16px;
+  }
+  button {
+    margin: 1em;
+    mat-icon {
+      margin-right: 5px;
+    }
+  }
+
+  .appointment-view-container {
+    max-height: 180px;
+    margin: 20px;
+    cursor: pointer;
+  }
+  .appointment-view-container:hover {
+    transform: scale(1.03);
+    transition: 0.5s;
+  }
+}
