@@ -3,9 +3,6 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {ApiService} from '../../../../core/services/api.service';
 import {UserCandidateModel} from '../../../../core/models/user-candidate.model';
-import {catchError} from 'rxjs/operators';
-import {throwError} from 'rxjs';
-import {error} from '@angular/compiler/src/util';
 
 @Component({
   selector: 'app-authentication-code-dialog',
@@ -32,9 +29,10 @@ export class AuthenticationCodeDialogComponent implements OnInit {
         person: UserCandidateModel,
         register_api_path: string
       }) => {
-        this.authenticationConfirmed.emit(citizen.person);
+
+        // this.authenticationConfirmed.emit(citizen.person);
       }, () => {
-        this.authenticationConfirmed.emit();
+        // this.authenticationConfirmed.emit(null);
       });
 
     }

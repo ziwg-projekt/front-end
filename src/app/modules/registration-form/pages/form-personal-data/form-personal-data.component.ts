@@ -3,8 +3,8 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from '../../../../core/services/api.service';
 import {MatDialog} from '@angular/material/dialog';
 import {AuthenticationCodeDialogComponent} from '../../components/authentication-code-dialog/authentication-code-dialog.component';
-import {concatMap} from 'rxjs/operators';
-import {Observable} from 'rxjs';
+import {concatMap, mergeMap, switchMap, tap} from 'rxjs/operators';
+import {Observable, Subscription} from 'rxjs';
 import {UserCandidateModel} from '../../../../core/models/user-candidate.model';
 import {RegistrationInfoDialogComponent} from '../../components/registration-info-dialog/registration-info-dialog.component';
 
@@ -17,6 +17,7 @@ export class FormPersonalDataComponent implements OnInit {
   public form: FormGroup;
   public notificationTypes: { name: string, value: number }[];
   public spinnerActive = false;
+  public userDetails$: Observable<UserCandidateModel>;
 
   constructor(
     private api: ApiService,
@@ -36,6 +37,7 @@ export class FormPersonalDataComponent implements OnInit {
         value: 1
       }
     ];
+    this.userDetails$ = null;
   }
 
   ngOnInit(): void {
@@ -43,11 +45,10 @@ export class FormPersonalDataComponent implements OnInit {
 
   public submitForm(): void {
     if (this.form.valid) {
-      let dialogRef;
       this.spinnerActive = true;
-      this.api.sendCitizenNotify(this.form.value).pipe(
+      this.userDetails$ = this.api.sendCitizenNotify(this.form.value).pipe(
         concatMap((res: { verify_api_path: string }): Observable<UserCandidateModel> => {
-          dialogRef = this.dialog.open(AuthenticationCodeDialogComponent, {
+          const dialogRef = this.dialog.open(AuthenticationCodeDialogComponent, {
             width: '250px',
             data: {
               address: res.verify_api_path
@@ -55,26 +56,57 @@ export class FormPersonalDataComponent implements OnInit {
           });
           this.spinnerActive = false;
           return dialogRef.componentInstance.authenticationConfirmed;
-        })
-      ).subscribe((confirmedUser: UserCandidateModel) => {
-        console.log(confirmedUser);
-        dialogRef.close();
-      }, error => {
-        this.spinnerActive = false;
-        let errorInfo;
-        error.status === 404 ? errorInfo = {
+        }),
+        tap(() => {
+          }, error => {
+            this.spinnerActive = false;
+            let errorInfo;
+            error.status === 404 ? errorInfo = {
               mainInfo: 'Niepoprawny nr. PESEL',
               extendInfo: 'Spróbuj ponownie'
             } : errorInfo = {
-            mainInfo: 'Błąd',
-            extendInfo: 'Spróbuj ponownie'
-          };
-        this.dialog.open(RegistrationInfoDialogComponent, {
-          width: '350px',
-          data: errorInfo
-        });
-      });
+              mainInfo: 'Błąd',
+              extendInfo: 'Spróbuj ponownie'
+            };
+            this.dialog.open(RegistrationInfoDialogComponent, {
+              width: '350px',
+              data: errorInfo
+            });
+          }
+        )
+      );
     }
   }
+
+
+  // this.userDetails$ = this.api.sendCitizenNotify(this.form.value).pipe(
+  //   concatMap((res: { verify_api_path: string }): Observable<UserCandidateModel> => {
+  //     dialogRef = this.dialog.open(AuthenticationCodeDialogComponent, {
+  //       width: '250px',
+  //       data: {
+  //         address: res.verify_api_path
+  //       }
+  //     });
+  //     this.spinnerActive = false;
+  //     return dialogRef.componentInstance.authenticationConfirmed;
+  //   })
+  // ).subscribe((confirmedUser: UserCandidateModel) => {
+  //   console.log(confirmedUser);
+  //   dialogRef.close();
+  // }, error => {
+  //   this.spinnerActive = false;
+  //   let errorInfo;
+  //   error.status === 404 ? errorInfo = {
+  //     mainInfo: 'Niepoprawny nr. PESEL',
+  //     extendInfo: 'Spróbuj ponownie'
+  //   } : errorInfo = {
+  //     mainInfo: 'Błąd',
+  //     extendInfo: 'Spróbuj ponownie'
+  //   };
+  //   this.dialog.open(RegistrationInfoDialogComponent, {
+  //     width: '350px',
+  //     data: errorInfo
+  //   });
+  // });
 
 }

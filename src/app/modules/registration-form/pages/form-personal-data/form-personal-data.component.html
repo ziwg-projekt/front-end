@@ -22,7 +22,13 @@
           <mat-spinner diameter="40"></mat-spinner>
         </div>
         <button *ngIf="!spinnerActive" type="submit" mat-raised-button>Wyślij</button>
+        <button *ngIf="(userDetails$ | async)" type="submit" style="color: white; background-color: green" mat-raised-button>Zaakceptowano</button>
       </form>
+    </div>
+    <div class="form-section" fxFlex="30" *ngIf="(userDetails$ | async) as obj">
+        <p>{{obj.name}}</p>
+        <p>{{obj.surname}}</p>
     </div>
   </div>
 </div>
+
