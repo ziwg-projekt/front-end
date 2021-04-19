@@ -33,16 +33,18 @@ form {
   }
   button {
     margin: 1em;
-    mat-icon{
-      margin-right:5px;
+    mat-icon {
+      margin-right: 5px;
     }
   }
 
-  .appointment-view-container{
-    width:60%;
-    height:100%;
-    max-height:180px;
-    margin:20px;
-    cursor:pointer;
-  } 
+  .appointment-view-container {
+    max-height: 180px;
+    margin: 20px;
+    cursor: pointer;
+  }
+  .appointment-view-container:hover {
+    transform: scale(1.03);
+    transition: 0.5s;
+  }
 }

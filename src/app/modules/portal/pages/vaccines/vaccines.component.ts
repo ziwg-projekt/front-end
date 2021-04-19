@@ -66,7 +66,6 @@ export class VaccinesComponent implements OnDestroy {
   }
 
   addVaccine() {
-    console.log(this.vaccineFormGroup.value);
     if (this.vaccineFormGroup.valid) {
       this.subscriptions.push(
         this.portalService.addVacine(this.vaccineFormGroup.value).subscribe(
