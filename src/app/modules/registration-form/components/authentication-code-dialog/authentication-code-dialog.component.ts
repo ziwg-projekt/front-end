@@ -11,7 +11,7 @@ import {UserCandidateModel} from '../../../../core/models/user-candidate.model';
 })
 export class AuthenticationCodeDialogComponent implements OnInit {
   public form: FormGroup;
-  @Output() authenticationConfirmed = new EventEmitter<UserCandidateModel>();
+  @Output() authenticationConfirmed = new EventEmitter<{userCandidateModel: UserCandidateModel, registerUrl: string}>();
 
   constructor(@Inject(MAT_DIALOG_DATA) public data, private api: ApiService) {
     this.form = new FormGroup({
@@ -20,7 +20,6 @@ export class AuthenticationCodeDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.data.address);
   }
 
   public submitForm(): void {
@@ -29,10 +28,10 @@ export class AuthenticationCodeDialogComponent implements OnInit {
         person: UserCandidateModel,
         register_api_path: string
       }) => {
-
-        // this.authenticationConfirmed.emit(citizen.person);
+        console.log(citizen.person);
+        this.authenticationConfirmed.emit({userCandidateModel: citizen.person, registerUrl: citizen.register_api_path});
       }, () => {
-        // this.authenticationConfirmed.emit(null);
+        this.authenticationConfirmed.emit(null);
       });
 
     }

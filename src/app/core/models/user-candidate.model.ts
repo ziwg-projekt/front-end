@@ -3,5 +3,5 @@ export interface UserCandidateModel {
   name: string;
   surname: string;
   pesel: string;
-  phoneNumber: string;
+  phone_number: string;
 }

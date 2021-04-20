@@ -1,0 +1,30 @@
+<div class="registration-data-container">
+  <form [formGroup]="form" (ngSubmit)="submitForm()" fxLayout="column" fxFlexAlign="start center">
+    <mat-form-field class="example-form-field">
+      <mat-label>Nazwa użytkownika</mat-label>
+      <input matInput type="text" formControlName="username">
+    </mat-form-field>
+    <mat-form-field class="example-form-field">
+      <mat-label>Hasło</mat-label>
+      <input matInput type="password" formControlName="password">
+    </mat-form-field>
+    <mat-form-field class="example-form-field">
+      <mat-label>Miejscowość</mat-label>
+      <input matInput type="text" formControlName="city">
+    </mat-form-field>
+    <mat-form-field class="example-form-field">
+      <mat-label>Numer ulicy</mat-label>
+      <input matInput type="text" formControlName="street">
+    </mat-form-field>
+    <mat-form-field class="example-form-field">
+      <mat-label>Numer lokalu</mat-label>
+      <input matInput type="text" formControlName="street_number">
+    </mat-form-field>
+
+<!--    <div fxLayoutAlign="center center" *ngIf="spinnerActive">-->
+<!--      <mat-spinner diameter="40"></mat-spinner>-->
+<!--    </div>-->
+    <button type="submit" mat-raised-button color="warn">Rejestracja</button>
+    <!--        <button *ngIf="(userDetails$ | async)" type="submit" style="color: white; background-color: green" mat-raised-button>Zaakceptowano</button>-->
+  </form>
+</div>

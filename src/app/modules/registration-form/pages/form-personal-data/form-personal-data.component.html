@@ -1,4 +1,4 @@
-<div class="form-personal-data-wrapper" fxLayoutAlign="center center">
+<div class="form-personal-data-wrapper" fxLayoutAlign="center center" >
   <div class="form-personal-data-container" fxLayout="column"
        fxFlex="60" fxFlex.lt-lg="100"
        fxLayoutAlign="center center"
@@ -22,12 +22,33 @@
           <mat-spinner diameter="40"></mat-spinner>
         </div>
         <button *ngIf="!spinnerActive" type="submit" mat-raised-button>Wyślij</button>
-        <button *ngIf="(userDetails$ | async)" type="submit" style="color: white; background-color: green" mat-raised-button>Zaakceptowano</button>
+<!--        <button *ngIf="(userDetails$ | async)" type="submit" style="color: white; background-color: green" mat-raised-button>Zaakceptowano</button>-->
       </form>
     </div>
-    <div class="form-section" fxFlex="30" *ngIf="(userDetails$ | async) as obj">
-        <p>{{obj.name}}</p>
-        <p>{{obj.surname}}</p>
+    <div *ngIf="(userDetails$ | async) as obj"
+         class="form-section"
+         fxFlex="30"
+         fxLayout="column"
+         fxLayoutAlign="center center">
+      <div fxLayoutGap="10px" fxLayoutAlign="center center">
+        <p style="font-weight: bold">Imię: </p>
+        <p>{{obj.userCandidateModel.name}}</p>
+      </div>
+      <div fxLayoutGap="10px" fxLayoutAlign="center center">
+        <p>Nazwisko: </p>
+        <p>{{obj.userCandidateModel.surname}}</p>
+      </div>
+      <div fxLayoutGap="10px" fxLayoutAlign="center center">
+        <p>PESEL: </p>
+        <p>{{obj.userCandidateModel.pesel}}</p>
+      </div>
+      <div fxLayoutGap="10px" fxLayoutAlign="center center">
+        <p>Nr. telefonu: </p>
+        <p>{{obj.userCandidateModel.phone_number}}</p>
+      </div>
+      <button mat-raised-button color="primary" class="accept-button" (click)="openRegistrationForm(obj.registerUrl)">
+        <p style="line-height: 1.8">Potwierdzam, że moje dane <br> osobwe są poprawne.</p>
+      </button>
     </div>
   </div>
 </div>

@@ -14,12 +14,13 @@ import { FormMapStageComponent } from './pages/form-map-stage/form-map-stage.com
 import { MapComponent } from './components/map/map.component';
 import { AuthenticationCodeDialogComponent } from './components/authentication-code-dialog/authentication-code-dialog.component';
 import { RegistrationInfoDialogComponent } from './components/registration-info-dialog/registration-info-dialog.component';
+import { RegistrationDataDialogComponent } from './components/registration-data-dialog/registration-data-dialog.component';
 
 
 
 @NgModule({
   declarations: [RegistrationFormComponent, FormMainPageComponent, FormPersonalDataComponent, LineChartComponent,
-    FormMapStageComponent, MapComponent, AuthenticationCodeDialogComponent, RegistrationInfoDialogComponent],
+    FormMapStageComponent, MapComponent, AuthenticationCodeDialogComponent, RegistrationInfoDialogComponent, RegistrationDataDialogComponent],
   imports: [
     CommonModule,
     RegistrationFormRoutingModule,
