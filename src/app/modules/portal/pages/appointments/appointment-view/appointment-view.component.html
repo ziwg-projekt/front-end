@@ -1,0 +1,42 @@
+<mat-card
+  class="appointment-conatiner"
+  [ngClass]="{
+    'border-confirmed': appointment.state === appointmentState.Confirmed,
+    'border-cancelled': appointment.state === appointmentState.Cancelled,
+    'border-finished': appointment.state === appointmentState.Finished
+  }"
+>
+  <mat-card-header
+    ><span class="title-container" fxLayout="row" fxLayoutAlign="center center"
+      >Dane szczepienia</span
+    >
+    <div class="icons-container">
+      <button mat-icon-button color="confirm"><mat-icon>done</mat-icon></button
+      ><button mat-icon-button color="warn"><mat-icon>close</mat-icon></button>
+    </div></mat-card-header
+  >
+  <mat-card-content class="card-content-container">
+    <div>
+      <span class="title-container">Termin:</span>
+      <span class="details-container">{{
+        appointment.date | date: "yyyy.MM.dd HH:mm"
+      }}</span>
+    </div>
+    <div>
+      <span class="title-container">Doktor:</span>
+      <span class="details-container">{{ appointment.doctor.id }}</span>
+    </div>
+    <div>
+      <span class="title-container">Szczepionka:</span>
+      <span class="details-container">{{
+        appointment.vaccine.company.name
+      }}</span>
+    </div>
+    <div>
+      <span class="title-container">Status:</span>
+      <span class="details-container">{{
+        appointment.state | appointmentStateTranslator
+      }}</span>
+    </div>
+  </mat-card-content>
+</mat-card>

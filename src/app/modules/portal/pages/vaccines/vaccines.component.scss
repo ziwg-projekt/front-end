@@ -1,0 +1,37 @@
+@import "src/assets/scss/colors";
+@import "../../portal.component.scss";
+
+form,
+.statistics-container {
+  min-height: 450px;
+  width: 100%;
+  border-radius: 60px;
+  padding: 5%;
+}
+
+.statistics-container {
+  background: $color-light-pink;
+  overflow-y: auto;
+  max-height: 95%;
+
+  .title-container {
+    margin-bottom: 20px;
+  }
+
+  .labels-container {
+    width: 100%;
+    margin-top: 20px;
+    span {
+      text-align: center;
+      color: $color-purple;
+      img {
+        max-width: 200px;
+        max-height: 70px;
+      }
+    }
+    .amount-container {
+      font-weight: bold !important;
+      font-size: larger;
+    }
+  }
+}

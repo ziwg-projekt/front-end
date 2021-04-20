@@ -1,0 +1,58 @@
+@import "src/assets/scss/colors";
+
+.menu-container {
+  width: 100%;
+  height: 100%;
+}
+
+.logo-container {
+  img {
+    width: 220px;
+  }
+}
+
+.menu-list {
+  padding-left: 60px;
+  padding-bottom: 40px;
+}
+.menu-item {
+  padding: 18px 20px;
+  cursor: pointer;
+  p {
+    margin: 0 0 0 20px;
+    color: $color-white;
+    font-size: 18px;
+  }
+  mat-icon {
+    color: $color-white;
+  }
+}
+
+.portal-navigation {
+  button {
+    width: 150px;
+    height: 40px;
+    border-radius: 15px;
+  }
+}
+
+.button-content {
+  color: $color-purple;
+  p {
+    margin: 0 0 0 12px;
+  }
+}
+
+.selected-item {
+  background-color: $color-white;
+  border-radius: 15px 0 0 15px;
+  mat-icon {
+    color: $color-purple;
+  }
+  p {
+    color: $color-purple;
+    font-family: "Montserrat-Bold", serif;
+  }
+}
+
+

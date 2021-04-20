@@ -1,0 +1,92 @@
+<div
+  class="main-container"
+  fxLayout.gt-md="row"
+  fxLayout="column"
+  fxLayoutGap="30px"
+>
+  <div class="form-container" fxFlex.gt-md="40" fxLayoutAlign="center center">
+    <form
+      *ngIf="companies$ | async as companies"
+      [formGroup]="vaccineFormGroup"
+      fxLayout="column"
+      fxLayoutAlign="space-between center"
+    >
+      <div class="title-container">Dane szczepionki</div>
+      <mat-form-field appearance="outline">
+        <mat-label>Firma</mat-label>
+        <mat-select formControlName="company">
+          <mat-option *ngFor="let c of $any(companies.content)" [value]="c">{{
+            c.name
+          }}</mat-option>
+        </mat-select>
+        <mat-error>Firma szczepionki jest wymagana</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Numer szczepionki</mat-label>
+        <input matInput type="text" formControlName="code" />
+        <mat-error>Numer szczepionki jest wymagany</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Rodzaj szczepionki</mat-label>
+        <mat-select formControlName="type">
+          <mat-option *ngFor="let v of vaccinesTypes" [value]="v.type">
+            {{ v.value }}</mat-option
+          >
+        </mat-select>
+        <mat-error>Rodzaj szczepionki jest wymagany</mat-error>
+      </mat-form-field>
+      <button
+        mat-raised-button
+        type="button"
+        class="primary-button"
+        (click)="addVaccine()"
+      >
+        Dodaj
+      </button>
+    </form>
+  </div>
+  <div fxFlex.gt-md="60" fxLayoutAlign="center center">
+    <div
+      *ngIf="statistics$ | async as statistics"
+      class="statistics-container"
+      fxLayout="column"
+      fxLayoutAlign="start center"
+    >
+      <div class="title-container">Obecny stan placówki</div>
+      <mat-form-field appearance="outline">
+        <mat-label>Rodzaj statystyki</mat-label>
+        <mat-select
+          [(ngModel)]="chosenStatistic"
+          (ngModelChange)="sortStatistics(statistics)"
+        >
+          <mat-option *ngFor="let s of statisticsTypes" [value]="s">
+            {{ s.value }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+      <div fxLayout="row" class="labels-container">
+        <span fxFlex="50">Firma</span>
+        <span fxFlex="50">Liczba szczepionek</span>
+      </div>
+      <div fxLayout="row" class="labels-container" *ngFor="let s of statistics">
+        <span fxFlex="50" fxLayoutAlign="center center">
+          <img
+            src="{{ s.logo_path }}"
+            alt="{{ s.company }}"
+            title="{{ s.company }}"
+          />
+        </span>
+        <span
+          fxFlex="50"
+          fxLayoutAlign="center center"
+          class="amount-container"
+          [ngSwitch]="chosenStatistic.type"
+        >
+          <p *ngSwitchCase="vaccineState.Given">{{ s.given }}</p>
+          <p *ngSwitchCase="vaccineState.Available">{{ s.available }}</p>
+          <p *ngSwitchCase="vaccineState.Assigned">{{ s.assigned }}</p>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

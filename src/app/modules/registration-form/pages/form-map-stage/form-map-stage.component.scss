@@ -1,0 +1,147 @@
+@import "src/assets/scss/colors";
+
+.form-map-stage-container {
+  height: 100%;
+  width: 100%;
+  padding: 36px;
+}
+
+.map-wrapper-header {
+  font-family: Montserrat-SemiBold, serif;
+  font-size: 46px;
+  color: $color-dark-blue;
+  padding-left: 40px;
+}
+.map-container-header {
+  top: 25px;
+  position: relative;
+
+  mat-card {
+    height: 100%;
+    padding: 0;
+    border-radius: 30px;
+    color: $color-dark-blue;
+    font-family: Montserrat-SemiBold, serif;
+    font-size: 30px;
+    z-index: 1;
+    background-color: $color-light-purple;
+  }
+}
+
+.map-container {
+  padding: 0 10px 0 10px;
+}
+
+.small-icon-wrapper {
+  mat-icon {
+    font-size: 40px;
+    height: 40px;
+    width: 40px;
+    color: $color-purple;
+  }
+
+  height: 60px;
+  width: 60px;
+  border-radius: 15px 5px 15px 5px;
+  padding: 0;
+}
+
+.contact-container {
+  margin-top: 20px;
+}
+
+.contact-bar {
+  height: 60px;
+  width: 320px;
+  border-radius: 20px 5px 20px 5px;
+  padding: 0;
+  background-color: $color-light-purple;
+
+  p {
+    margin: 0;
+    color: $color-purple;
+    opacity: 0.6;
+    font-size: 18px;
+  }
+
+  mat-icon {
+    font-size: 30px;
+    height: 30px;
+    width: 30px;
+    color: $color-purple;
+  }
+}
+
+.contact-image {
+  height: 60px;
+  width: 60px;
+  border-radius: 5px 5px;
+}
+
+.contact-icon-wrapper {
+  background-color: $color-light-purple;
+
+  mat-icon {
+    font-size: 30px;
+    height: 30px;
+    width: 30px;
+  }
+}
+.vaccine-info-container {
+  width: 100%;
+  height: 100%;
+  padding: 50px 20px 50px 20px;
+}
+
+.vaccine-info-header {
+  padding: 15px 0 30px 0;
+  margin-bottom: 20px;
+
+  h1 {
+    margin: 0;
+    color: $color-dark-blue;
+    font-family: "Montserrat-Bold", serif;
+  }
+}
+
+.vaccine-info-content-container {
+  width: 80%;
+  height: 80%;
+  background-color: $color-light-pink;
+  border-radius: 60px;
+
+  img {
+    height: 200px;
+    width: 270px;
+    border-radius: 30px;
+  }
+
+  button {
+    background-color: #5840bb;
+    color: white;
+    border-radius: 20px;
+    margin-top: 50px;
+    padding: 5px 30px 5px 30px;
+  }
+}
+
+.contact-details-wrapper {
+  margin-top: 60px;
+}
+
+.contact-details-labels {
+  p {
+    font-family: "Montserrat-SemiBold", sans-serif;
+    font-size: 18px;
+    color: $color-dark-blue;
+    line-height: 1.5;
+  }
+}
+
+.contact-details-items {
+  p {
+    font-size: 16px;
+    color: $color-dark-blue;
+    line-height: 1.7;
+  }
+}
