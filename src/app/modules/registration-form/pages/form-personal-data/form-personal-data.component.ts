@@ -7,6 +7,7 @@ import {concatMap, mergeMap, switchMap, tap} from 'rxjs/operators';
 import {Observable, Subscription} from 'rxjs';
 import {UserCandidateModel} from '../../../../core/models/user-candidate.model';
 import {RegistrationInfoDialogComponent} from '../../components/registration-info-dialog/registration-info-dialog.component';
+import {RegistrationDataDialogComponent} from '../../components/registration-data-dialog/registration-data-dialog.component';
 
 @Component({
   selector: 'app-form-personal-data',
@@ -17,14 +18,14 @@ export class FormPersonalDataComponent implements OnInit {
   public form: FormGroup;
   public notificationTypes: { name: string, value: number }[];
   public spinnerActive = false;
-  public userDetails$: Observable<UserCandidateModel>;
+  public userDetails$: Observable<{userCandidateModel: UserCandidateModel, registerUrl: string}>;
 
   constructor(
     private api: ApiService,
     private dialog: MatDialog
   ) {
     this.form = new FormGroup({
-      pesel: new FormControl('78101134985', [Validators.required]),
+      pesel: new FormControl('', [Validators.required]),
       communication_channel_type: new FormControl(null, [Validators.required])
     });
     this.notificationTypes = [
@@ -46,9 +47,10 @@ export class FormPersonalDataComponent implements OnInit {
   public submitForm(): void {
     if (this.form.valid) {
       this.spinnerActive = true;
+      let dialogRef;
       this.userDetails$ = this.api.sendCitizenNotify(this.form.value).pipe(
-        concatMap((res: { verify_api_path: string }): Observable<UserCandidateModel> => {
-          const dialogRef = this.dialog.open(AuthenticationCodeDialogComponent, {
+        concatMap((res: { verify_api_path: string }): Observable<{userCandidateModel: UserCandidateModel, registerUrl: string}> => {
+          dialogRef = this.dialog.open(AuthenticationCodeDialogComponent, {
             width: '250px',
             data: {
               address: res.verify_api_path
@@ -57,9 +59,11 @@ export class FormPersonalDataComponent implements OnInit {
           this.spinnerActive = false;
           return dialogRef.componentInstance.authenticationConfirmed;
         }),
-        tap(() => {
+        tap((res) => {
+            dialogRef.close();
           }, error => {
             this.spinnerActive = false;
+            dialogRef.close();
             let errorInfo;
             error.status === 404 ? errorInfo = {
               mainInfo: 'Niepoprawny nr. PESEL',
@@ -76,6 +80,17 @@ export class FormPersonalDataComponent implements OnInit {
         )
       );
     }
+  }
+
+  public openRegistrationForm(registerUrl: string): void {
+    this.dialog.open(RegistrationDataDialogComponent, {
+      width: '350px',
+      data: {
+        registerApi: registerUrl
+      }
+    }).afterClosed().subscribe(() => {
+      console.log('zamkniete');
+    });
   }
 
 
