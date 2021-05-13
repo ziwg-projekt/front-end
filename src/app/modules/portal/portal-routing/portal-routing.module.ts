@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { PortalComponent } from '../portal.component';
 import { VaccinesComponent } from '../pages/vaccines/vaccines.component';
 import { PatientsComponent } from '../pages/patients/patients.component';
+import { AppointmentsComponent } from '../pages/appointments/appointments.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
       {
         path: 'patients',
         component: PatientsComponent,
+      },
+      {
+        path: 'appointments',
+        component: AppointmentsComponent,
       },
     ],
   },

@@ -1,0 +1,31 @@
+@import "src/assets/scss/colors";
+@import "../../portal.component.scss";
+
+.radio-buttons-container{
+    margin:2rem 0 ;
+    input{
+    }
+}
+
+.appointments-container {
+    width: 100%;
+    padding: 1em;
+    .title-container {
+      font-size: 20px;
+    }
+    .title-container:last-child {
+      font-size: 16px;
+    }
+    button {
+      margin: 1em;
+      mat-icon {
+        margin-right: 5px;
+      }
+    }
+  
+    .appointment-view {
+      max-height: 180px;
+      width: 50%;
+      cursor: pointer;
+    }
+  }

@@ -65,7 +65,7 @@ export class PatientsComponent implements OnInit, OnDestroy {
     if (this.personalId.valid && this.personalId.value != '') {
       this.subscriptions.push(
         this.portalService.getPatient(this.personalId.value).subscribe(
-          //pomocniczy pesel 2888924742
+          //pomocniczy pesel 56111245968
           (c) => {
             this.patchValueOfCitizen(c);
             this.currentCitizen = c;

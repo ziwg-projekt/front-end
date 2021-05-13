@@ -13,6 +13,7 @@ import { AppointmentViewComponent } from './pages/appointments/appointment-view/
 import { NewAppointmentDialogComponent } from './pages/appointments/new-appointment-dialog/new-appointment-dialog.component';
 import { AppointmentStateTranslatorPipe } from 'src/app/core/pipes/appointment-state-translator.pipe';
 import { DatePipe } from '@angular/common';
+import { AppointmentsComponent } from './pages/appointments/appointments.component';
 @NgModule({
   declarations: [
     PortalComponent,
@@ -21,6 +22,7 @@ import { DatePipe } from '@angular/common';
     AppointmentViewComponent,
     NewAppointmentDialogComponent,
     AppointmentStateTranslatorPipe,
+    AppointmentsComponent
   ],
   imports: [
     CommonModule,

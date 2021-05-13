@@ -30,8 +30,14 @@ export class PortalService {
     );
   }
 
-  getPatients(): Observable<Citizen[]> {
-    return this.http.get<Citizen[]>(this.host + `v1/citizens`);
+  getHospitalAppointments(): Observable<any> {
+    return this.http.get(
+      this.host + `v1/appointments`
+    );
+  }
+
+  getPatients(): Observable<any> {
+    return this.http.get<any>(this.host + `v1/citizens`);
   }
 
   editPatientData(pesel: string, citizenForm): Observable<Citizen> {

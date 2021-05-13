@@ -1,0 +1,19 @@
+<div class="main-container" fxLayout="column" fxLayoutAlign="start" *ngIf="appointments$ | async as appointments">
+  <button mat-raised-button type="button" class="primary-button" (click)="openNewAppointmentDialog()">
+    <mat-icon>add</mat-icon>Dodaj termin szczepienia
+  </button>
+  <div class="radio-buttons-container" fxLayout="row" fxLayoutAlign="space-evenly center" >
+    <div><input type="radio" id="radio" name="appointments-buttons" checked
+         >
+  <label for="radio">Zatwierdzone</label></div>
+<div><input type="radio" id="radio" name="appointments-buttons"
+         >
+  <label for="radio">Anulowane</label></div>
+<div><input type="radio" id="radio" name="appointments-buttons"
+         >
+  <label for="radio">Zakończone</label></div>
+  </div>
+  <div class="appointments-container">
+  <app-appointment-view class="appointment-view" *ngFor="let a of $any(appointments.content)" [appointment]="a"></app-appointment-view>
+  </div>
+</div>

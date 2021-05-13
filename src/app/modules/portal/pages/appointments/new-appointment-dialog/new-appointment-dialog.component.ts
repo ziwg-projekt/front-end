@@ -6,6 +6,7 @@ import { Doctor } from 'src/app/core/models/doctor';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Vaccine } from 'src/app/core/models/vaccine';
 import { PortalService } from 'src/app/core/services/portal.service';
+import { Citizen } from 'src/app/core/models/citizen';
 @Component({
   selector: 'app-new-appointment-dialog',
   templateUrl: './new-appointment-dialog.component.html',
@@ -19,6 +20,7 @@ export class NewAppointmentDialogComponent implements OnInit {
   vaccines$: Observable<Vaccine[]> = this.portalService.getHospitalVaccines(
     this.data.hospitalId
   );
+  citizens$ = this.portalService.getPatients();
   minDate: Date = new Date();
 
   constructor(
@@ -37,10 +39,13 @@ export class NewAppointmentDialogComponent implements OnInit {
       date: [undefined, Validators.required],
       doctor: [undefined, Validators.required],
       vaccine: [undefined, Validators.required],
-      citizen: [this.data.citizen],
+      citizen: [undefined, Validators.required],
     });
     if (this.data.appointment) {
       this.appointmentForm.patchValue(this.data.appointment);
+      this.appointmentForm.get("citizen").setValue(this.data.citizen);
+    }else if(this.data.citizen){
+      this.appointmentForm.get("citizen").setValue(this.data.citizen);
     }
   }
 
