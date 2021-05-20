@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/internal/operators/map';
 import { environment } from 'src/environments/environment';
+import { Authority } from '../enums/authority.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -23,12 +24,23 @@ export class AuthService {
           if (data && data.access_token) {
             this.setToken(data.access_token);
             this.setUserId(data.user_id);
+            if (this.checkRole(data.authorities, Authority.Admin)) {
+              this.setUserRole(Authority.Admin);
+            } else if (this.checkRole(data.authorities, Authority.Hospital)) {
+              this.setUserRole(Authority.Hospital);
+            } else {
+              this.setUserRole(Authority.Citizen);
+            }
           }
           return data;
         })
       );
   }
-
+  checkRole(authorities, role:Authority) {
+    return authorities.some((a) => {
+      return a.authority == role;
+    })
+  }
   isLoggedIn() {
     if (this.getToken()) {
       return true;
@@ -47,7 +59,12 @@ export class AuthService {
   setUserId(value: string) {
     localStorage.setItem('user_id', value);
   }
-
+  setUserRole(value: string) {
+    localStorage.setItem('role', value);
+  }
+  get userRole(): string {
+    return localStorage.getItem('role');
+  }
   get userId(): number {
     return parseInt(localStorage.getItem('user_id'));
   }
