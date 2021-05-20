@@ -11,6 +11,11 @@ const routes: Routes = [
     component: RegistrationFormComponent,
     children: [
       {
+        path: '',
+        redirectTo: 'main-page',
+        pathMatch: 'full',
+      },
+      {
         path: 'main-page',
         component: FormMainPageComponent
       },

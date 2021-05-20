@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { PortalGuard } from './core/guards/portal.guard';
+import { Authority } from './core/enums/authority.enum';
+import { AuthGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/registration/main-page',
+    redirectTo: 'registration',
     pathMatch: 'full'
   },
   {
@@ -14,8 +15,27 @@ const routes: Routes = [
   },
   {
     path: 'portal',
-    canActivate: [PortalGuard],
+    canActivate: [AuthGuard],
+    data: {
+      role: Authority.Hospital
+    },
     loadChildren: () => import('./modules/portal/portal.module').then(m => m.PortalModule)
+  },
+  {
+    path: 'patient',
+    canActivate: [AuthGuard],
+    data: {
+      role: Authority.Citizen
+    },
+    loadChildren: () => import('./modules/patient/patient.module').then(m => m.PatientModule)
+  },
+  {
+    path: 'admin',
+    canActivate: [AuthGuard],
+    data: {
+      role: Authority.Admin
+    },
+    loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule)
   }
 ];
 

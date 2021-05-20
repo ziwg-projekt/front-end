@@ -11,7 +11,9 @@ import { RegistrationFormModule } from './modules/registration-form/registration
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './core/interceptors/token.interceptor';
 import { ToastrModule } from 'ngx-toastr';
-import { PortalGuard } from './core/guards/portal.guard';
+import { AuthGuard } from './core/guards/auth.guard';
+import { PatientModule } from './modules/patient/patient.module';
+import { AdminModule } from './modules/admin/admin.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,10 +26,12 @@ import { PortalGuard } from './core/guards/portal.guard';
     HttpClientModule,
     RegistrationFormModule,
     PortalModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    PatientModule,
+    AdminModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },PortalGuard
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },AuthGuard
   ],
   bootstrap: [AppComponent],
 })
