@@ -1,10 +1,11 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {MatDialog} from '@angular/material/dialog';
-import {AuthService} from 'src/app/core/services/auth.service';
-import {LoginDialogComponent} from '../login-dialog/login-dialog.component';
-import {ToastrService} from 'ngx-toastr';
-import {Subscription} from 'rxjs/internal/Subscription';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
+import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { Authority } from 'src/app/core/enums/authority.enum';
 
 @Component({
   selector: 'app-sidebar',
@@ -23,8 +24,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private toastr: ToastrService,
     private route: ActivatedRoute
-  ) {
-  }
+  ) {}
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((s) => {
@@ -41,11 +41,20 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   private initPortalItems(): void {
-    this.menuItems = [
-      {icon: 'security', label: 'Szczepionki', href: '/portal/vaccines'},
-      {icon: 'people', label: 'Pacjenci', href: '/portal/patients'},
-    ];
-    this.currentStep = 'Szczepionki';
+    switch (this.authService.userRole) {
+      case Authority.Admin:
+        break;
+      case Authority.Hospital:
+        this.menuItems = [
+          { icon: 'security', label: 'Szczepionki', href: '/portal/vaccines' },
+          { icon: 'people', label: 'Pacjenci', href: '/portal/patients' },
+        ];
+        this.currentStep = 'Szczepionki';
+        break;
+      case Authority.Citizen:
+        break;
+    }
+    
   }
 
   private initFormItems(): void {
@@ -53,7 +62,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
       {
         icon: 'home',
         label: 'Strona główna',
-        href: '/registration/main-page'
+        href: '/registration/main-page',
       },
       {
         icon: 'assignment',
@@ -106,7 +115,14 @@ export class SidebarComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((data) => {
       if (this.authService.isLoggedIn()) {
         this.toastr.success('Pomyślne logowanie');
-        this.router.navigate(['/portal']);
+        switch (this.authService.userRole) {
+          case Authority.Admin:
+            return this.router.navigate(['/admin']);
+          case Authority.Hospital:
+            return this.router.navigate(['/portal']);
+          case Authority.Citizen:
+            return this.router.navigate(['/patient']);
+        }
       }
     });
   }
@@ -114,6 +130,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
   logout() {
     this.authService.logOut();
     this.toastr.success('Wylogowano');
-    this.router.navigate(['/registration']);
+    this.router.navigate(['/registration/main-page']);
   }
 }
