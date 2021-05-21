@@ -6,6 +6,7 @@ import { MaterialModule } from '../material/material.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminRoutingModule } from './admin-routing/admin-routing.module';
+import { HospitalComponent } from './hospital/hospital.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -14,8 +15,8 @@ import { AdminRoutingModule } from './admin-routing/admin-routing.module';
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    AdminRoutingModule
+    AdminRoutingModule,
   ],
-  declarations: [AdminComponent]
+  declarations: [AdminComponent, HospitalComponent],
 })
-export class AdminModule { }
+export class AdminModule {}

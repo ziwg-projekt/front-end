@@ -76,4 +76,8 @@ export class PortalService {
   getCompanies(): Observable<any> {
     return this.http.get(this.host + 'v1/companies');
   }
+
+  addHospital(hospital): Observable<any> {
+    return this.http.post(this.host + 'v1/hospitals',hospital);
+  }
 }

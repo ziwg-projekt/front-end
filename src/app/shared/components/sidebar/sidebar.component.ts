@@ -43,6 +43,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
   private initPortalItems(): void {
     switch (this.authService.userRole) {
       case Authority.Admin:
+        this.menuItems = [
+          { icon: 'local_hospital', label: 'Szpital', href: '/admin/hospital' },
+        ];
+        this.currentStep = 'Szpital';
         break;
       case Authority.Hospital:
         this.menuItems = [
@@ -54,7 +58,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
       case Authority.Citizen:
         break;
     }
-    
   }
 
   private initFormItems(): void {
