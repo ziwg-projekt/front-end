@@ -1,0 +1,47 @@
+<div class="main-container" fxLayout="column" fxLayoutAlign="center center">
+  <form
+    [formGroup]="hospitalFormGroup"
+    fxLayout="column"
+    fxLayoutAlign="space-between center"
+  >
+    <h2>Dane szpitala</h2>
+    <mat-form-field appearance="outline">
+      <mat-label>Miasto</mat-label>
+      <input matInput type="text" formControlName="city" />
+      <mat-error>Miasto jest wymagane</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Nazwa</mat-label>
+      <input matInput type="text" formControlName="name" />
+      <mat-error>Nazwa jest wymagana</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Hasło</mat-label>
+      <input matInput type="password" formControlName="password" />
+      <mat-error>Hasło jest wymagane</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Ulica</mat-label>
+      <input matInput type="text" formControlName="street" />
+      <mat-error>Ulica jest wymagana</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Numer ulicy</mat-label>
+      <input matInput type="text" formControlName="street_number" />
+      <mat-error>Numer ulicy jest wymagany</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Nazwa użytkownika</mat-label>
+      <input matInput type="text" formControlName="username" />
+      <mat-error>Nazwa użytkownika jest wymagana</mat-error>
+    </mat-form-field>
+    <button
+      mat-raised-button
+      type="button"
+      class="primary-button"
+      (click)="submit()"
+    >
+      Dodaj
+    </button>
+  </form>
+</div>
