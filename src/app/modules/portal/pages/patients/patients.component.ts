@@ -14,7 +14,7 @@ import { Appointment } from 'src/app/core/models/appointment';
 import { Citizen } from 'src/app/core/models/citizen';
 import { Hospital } from 'src/app/core/models/hospital';
 import { PortalService } from 'src/app/core/services/portal.service';
-import { NewAppointmentDialogComponent } from '../appointments/new-appointment-dialog/new-appointment-dialog.component';
+import { NewAppointmentDialogComponent } from '../../components/new-appointment-dialog/new-appointment-dialog.component';
 import { DatePipe } from '@angular/common';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { AppointmentDto } from 'src/app/core/models/appointment-dto';
@@ -65,7 +65,7 @@ export class PatientsComponent implements OnInit, OnDestroy {
     if (this.personalId.valid && this.personalId.value != '') {
       this.subscriptions.push(
         this.portalService.getPatient(this.personalId.value).subscribe(
-          //pomocniczy pesel 56111245968
+          //pomocniczy pesel 99110323923
           (c) => {
             this.patchValueOfCitizen(c);
             this.currentCitizen = c;
@@ -84,24 +84,46 @@ export class PatientsComponent implements OnInit, OnDestroy {
 
   initForm() {
     this.citizenForm = this.fb.group({
-      address: [undefined, Validators.required],
-      email: [undefined, Validators.required],
-      hospital: [this.hospital],
-      name: [undefined, Validators.required],
-      surname: [undefined, Validators.required],
-      pesel: [undefined, Validators.required],
-      phone_number: [undefined],
+      address:[undefined],
+      email: [undefined, Validators.pattern("[A-Za-z0-9._%-]+@[A-Za-z0-9._%-]+\\.[a-z]{2,3}")],
+      name: [undefined],
+      surname: [undefined],
+      pesel: [undefined],
+      phone_number: [undefined, Validators.pattern("[0-9]{9}")],
       city: [undefined, Validators.required],
       street: [undefined, Validators.required],
       street_number: [undefined, Validators.required],
-      state: [CitizenStateType.Waiting],
+      username: [undefined],
+      password: [undefined],
     });
   }
 
   submitForm() {
     if (!this.personalId.value) {
-      //dodanie nowego pacjenta
+      this.citizenForm.get("username").setValidators(Validators.required);
+      this.citizenForm.get("password").setValidators(Validators.required);
+      if (this.citizenForm.valid) {
+      this.subscriptions.push(
+        this.portalService
+          .addPatientInHospital(this.citizenForm.value)
+          .subscribe(
+            (c) => {
+              this.patchValueOfCitizen(c);
+              this.currentCitizen = c;
+              this.toastr.success('Pomyslnie dodano pacjenta');
+            },
+            (e) => {
+              this.toastr.error('Błąd podczas rejestracji pacjenta');
+            }
+          )
+      );
+        }else{
+          this.citizenForm.markAllAsTouched();
+          this.toastr.warning('Proszę wypełnić wymagane pola');
+        }
     } else {
+      this.citizenForm.get("username").clearValidators();
+      this.citizenForm.get("password").clearValidators();
       if (this.citizenForm.valid) {
         this.subscriptions.push(
           this.portalService
@@ -113,10 +135,13 @@ export class PatientsComponent implements OnInit, OnDestroy {
                 this.toastr.success('Dane pacjenta zostały zaktualizowane');
               },
               (e) => {
-                this.toastr.success('Błąd podczas aktualizowaneia danych');
+                this.toastr.error('Błąd podczas aktualizowaneia danych');
               }
             )
         );
+      }else{
+        this.citizenForm.markAllAsTouched();
+        this.toastr.warning('Proszę wypełnić wymagane pola');
       }
     }
   }
@@ -159,31 +184,7 @@ export class PatientsComponent implements OnInit, OnDestroy {
       this.currentCitizen.pesel
     );
   }
-  openNewAppointmentDialog() {
-    const dialogRef = this.dialog.open(NewAppointmentDialogComponent, {
-      width: '500px',
-      height: '500px',
-      data: {
-        hospitalId: this.hospital.id,
-        citizen: this.currentCitizen,
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((data: Appointment) => {
-      if (data && data.citizen) {
-        let appointmentDto: AppointmentDto = {
-          citizenPesel: data.citizen.pesel,
-          doctorId: data.doctor.id,
-          vaccineCode: data.vaccine.code,
-          date: this.datePipe.transform(data.date, 'yyyy-MM-dd HH:mm'),
-        };
-
-        this.portalService.addAppointment(appointmentDto).subscribe((a) => {
-          this.getAppointments();
-        });
-      }
-    });
-  }
+  
 
   openAppointmentDialog(a: Appointment) {
     const dialogRef = this.dialog.open(NewAppointmentDialogComponent, {
@@ -191,10 +192,9 @@ export class PatientsComponent implements OnInit, OnDestroy {
       height: '500px',
       data: {
         hospitalId: this.hospital.id,
-        citizen: this.currentCitizen,
+        //citizen: this.currentCitizen,
         appointment: a,
       },
     });
-    dialogRef.afterClosed().subscribe((data: Appointment) => {});
   }
 }

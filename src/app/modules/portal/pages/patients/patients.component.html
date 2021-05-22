@@ -37,30 +37,40 @@
         fxLayoutAlign="space-between center"
       >
         <span class="title-container">Dane pacjenta</span>
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" *ngIf="personalId.disabled">
+          <mat-label>Nazwa użytkownika</mat-label>
+          <input matInput type="text" formControlName="username" />
+          <mat-error>Nazwa użytkownika jest wymagana</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" *ngIf="personalId.disabled">
+          <mat-label>Hasło</mat-label>
+          <input matInput type="password" formControlName="password" />
+          <mat-error>Hasło jest wymagane</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" *ngIf="!personalId.disabled">
           <mat-label>Imię</mat-label>
-          <input matInput type="text" formControlName="name" />
+          <input matInput type="text" formControlName="name" readonly/>
           <mat-error>Imię jest wymagane</mat-error>
         </mat-form-field>
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" *ngIf="!personalId.disabled">
           <mat-label>Nazwisko</mat-label>
-          <input matInput type="text" formControlName="surname" />
+          <input matInput type="text" formControlName="surname" readonly/>
           <mat-error>Nazwisko jest wymagane</mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Email</mat-label>
           <input matInput type="text" formControlName="email" />
-          <mat-error>Email jest wymagany</mat-error>
+          <mat-error>Niewłaściwy email</mat-error>
         </mat-form-field>
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" *ngIf="!personalId.disabled">
           <mat-label>PESEL</mat-label>
-          <input matInput type="text" formControlName="pesel" />
+          <input matInput type="text" formControlName="pesel" readonly/>
           <mat-error>PESEL jest wymagany</mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Nr telefonu</mat-label>
           <input matInput type="text" formControlName="phone_number" />
-          <mat-error>Nr telefonu jest wymagany</mat-error>
+          <mat-error>Niewłaściwy numer telefonu</mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Miasto</mat-label>
@@ -97,9 +107,6 @@
       class="appointments-container"
     >
       <span class="title-container">Terminy szczepień pacjenta</span>
-      <button mat-raised-button type="button" class="primary-button" (click)="openNewAppointmentDialog()">
-        <mat-icon>add</mat-icon>Dodaj termin szczepienia
-      </button>
       <div
         class="appointment-view-container"
         *ngIf="appointments.length > 0; else noAppointments"

@@ -4,10 +4,10 @@ import { Observable } from 'rxjs/internal/Observable';
 import { environment } from 'src/environments/environment';
 import { Vaccine } from '../models/vaccine';
 import { User } from '../models/user';
-import { Doctor } from '../models/doctor';
 import { Appointment } from '../models/appointment';
 import { Citizen } from '../models/citizen';
 import { AppointmentDto } from '../models/appointment-dto';
+import { CitizenRegisterDto } from '../models/citizen-register-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -30,10 +30,8 @@ export class PortalService {
     );
   }
 
-  getHospitalAppointments(): Observable<any> {
-    return this.http.get(
-      this.host + `v1/appointments`
-    );
+  getHospitalAppointments(id): Observable<any> {
+    return this.http.get(this.host + `v1/hospitals/${id}/appointments`);
   }
 
   getPatients(): Observable<any> {
@@ -50,9 +48,27 @@ export class PortalService {
     );
   }
 
-  addAppointment(appointment: AppointmentDto): Observable<Appointment> {
-    return this.http.post<Appointment>(
-      this.host + `v1/appointments`,
+  addCitizenToAppointment(appointment: Appointment): Observable<Appointment> {
+    return this.http.patch<Appointment>(
+      this.host + `v1/appointments/${appointment.id}/actions/enroll`,
+      appointment
+    );
+  }
+
+  notMadeAppointment(
+    appointment: Appointment
+  ): Observable<Appointment> {
+    return this.http.patch<Appointment>(
+      this.host + `v1/appointments/${appointment.id}/actions/not-made`,
+      appointment
+    );
+  }
+
+ madeAppointment(
+    appointment: Appointment
+  ): Observable<Appointment> {
+    return this.http.patch<Appointment>(
+      this.host + `v1/appointments/${appointment.id}/actions/made`,
       appointment
     );
   }
@@ -71,10 +87,6 @@ export class PortalService {
     return this.http.get(this.host + `v1/hospitals/${id}/vaccines/stats`);
   }
 
-  getDoctors(id: number): Observable<Doctor[]> {
-    return this.http.get<Doctor[]>(this.host + `v1/hospitals/${id}/doctors`);
-  }
-
   getHospitalVaccines(id: number): Observable<Vaccine[]> {
     return this.http.get<Vaccine[]>(this.host + `v1/hospitals/${id}/vaccines`);
   }
@@ -84,6 +96,23 @@ export class PortalService {
   }
 
   addHospital(hospital): Observable<any> {
-    return this.http.post(this.host + 'v1/hospitals',hospital);
+    return this.http.post(this.host + 'v1/hospitals', hospital);
+  }
+
+  addPatientInHospital(patient): Observable<any> {
+    let newPatient: CitizenRegisterDto = {
+      city: patient.city,
+      password: patient.password,
+      email: patient.email,
+      phone_number: patient.phone_number,
+      street: patient.street,
+      street_number: patient.street_number,
+      username: patient.username,
+    };
+
+    return this.http.post(
+      this.host + 'v1/auth/registration/hospital/citizen/register',
+      newPatient
+    );
   }
 }

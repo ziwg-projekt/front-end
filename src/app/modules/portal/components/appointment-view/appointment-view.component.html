@@ -1,18 +1,18 @@
 <mat-card
-  class="appointment-conatiner"
+  class="appointment-container"
   [ngClass]="{
-    'border-confirmed': appointment.state === appointmentState.Confirmed,
-    'border-cancelled': appointment.state === appointmentState.Cancelled,
-    'border-finished': appointment.state === appointmentState.Finished
+    'border-confirmed': appointment.state === appointmentState.Available || appointment.state === appointmentState.Assigned,
+    'border-cancelled': appointment.state === appointmentState.Not_made,
+    'border-finished': appointment.state === appointmentState.Made
   }"
 >
   <mat-card-header
     ><span class="title-container" fxLayout="row" fxLayoutAlign="center center"
       >Dane szczepienia</span
     >
-    <div class="icons-container">
-      <button mat-icon-button color="confirm"><mat-icon>done</mat-icon></button
-      ><button mat-icon-button color="warn"><mat-icon>close</mat-icon></button>
+    <div class="icons-container" *ngIf="appointment.citizen">
+      <button mat-icon-button class="accept-button" (click)="doneAppointment($event)"><mat-icon>done</mat-icon></button
+      ><button mat-icon-button color="warn" (click)="cancelAppointment($event)"><mat-icon>close</mat-icon></button>
     </div></mat-card-header
   >
   <mat-card-content class="card-content-container">
@@ -25,10 +25,6 @@
       <span class="details-container">{{
         appointment.date | date: "yyyy.MM.dd HH:mm"
       }}</span>
-    </div>
-    <div>
-      <span class="title-container">Doktor:</span>
-      <span class="details-container">{{ appointment.doctor.id }}</span>
     </div>
     <div>
       <span class="title-container">Szczepionka:</span>

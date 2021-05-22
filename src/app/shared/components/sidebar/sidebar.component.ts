@@ -54,11 +54,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
           { icon: 'people', label: 'Pacjenci', href: '/portal/patients' },
           { icon: 'calendar_today', label: 'Szczepienia', href: '/portal/appointments' },
         ];
-        this.currentStep = 'Szczepionki';
         break;
       case Authority.Citizen:
         break;
     }
+    this.currentStep = this.checkActualStep();
   }
 
   private initFormItems(): void {
