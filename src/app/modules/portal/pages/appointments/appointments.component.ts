@@ -1,10 +1,9 @@
-import { DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, Subscription } from 'rxjs';
+import { AppointmentState } from 'src/app/core/enums/appointment-state.enum';
 import { Appointment } from 'src/app/core/models/appointment';
-import { AppointmentDto } from 'src/app/core/models/appointment-dto';
 import { Hospital } from 'src/app/core/models/hospital';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { PortalService } from 'src/app/core/services/portal.service';
@@ -19,7 +18,8 @@ export class AppointmentsComponent implements OnInit, OnDestroy {
   hospital: Hospital;
   subscriptions: Subscription[] = [];
   appointments$: Observable<any>;
-
+  chosenRadioButton: AppointmentState = AppointmentState.Available;
+  appointmentState = AppointmentState;
   constructor(
     private portalService: PortalService,
     public dialog: MatDialog,
@@ -31,7 +31,7 @@ export class AppointmentsComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.portalService.getUser(this.authService.userId).subscribe((u) => {
         this.hospital = u.hospital;
-        this.getAppointments(this.hospital.id);
+        this.getAppointments();
       })
     );
   }
@@ -42,53 +42,67 @@ export class AppointmentsComponent implements OnInit, OnDestroy {
     });
   }
 
-  /*openNewAppointmentDialog() {
+  openAppointmentDialog(appointment: Appointment) {
     const dialogRef = this.dialog.open(NewAppointmentDialogComponent, {
       width: '500px',
       height: '500px',
       data: {
         hospitalId: this.hospital.id,
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((data: Appointment) => {
-      if (data && data.citizen) {
-        let appointmentDto: AppointmentDto = {
-          citizenPesel: data.citizen.pesel,
-          vaccineCode: data.vaccine.code,
-          date: this.datePipe.transform(data.date, 'yyyy-MM-dd HH:mm'),
-        };
-
-        this.portalService.addAppointment(appointmentDto).subscribe((a) => {
-          this.getAppointments(this.hospital.id);
-        });
-      }
-    });
-  }*/
-
-  openAppointmentDialog(appointmentToUpdate: Appointment) {
-    const dialogRef = this.dialog.open(NewAppointmentDialogComponent, {
-      width: '500px',
-      height: '500px',
-      data: {
-        hospitalId: this.hospital.id,
-        appointment: appointmentToUpdate,
+        appointment: appointment,
       },
     });
     dialogRef.afterClosed().subscribe((data) => {
       if (data.citizen) {
+        let appointmentToUpdate:Appointment = appointment;
         appointmentToUpdate.citizen = data.citizen;
         this.subscriptions.push(
-          this.portalService.addCitizenToAppointment(appointmentToUpdate).subscribe((a) => {
-            this.toastrService.success(
-              'Pomyślnie przypisano pacjenta do szczepienia'
-            );
-          })
+          this.portalService
+            .addCitizenToAppointmentHospital(appointmentToUpdate)
+            .subscribe((a) => {
+              this.getAppointments();
+              this.toastrService.success(
+                'Pomyślnie przypisano pacjenta do szczepienia'
+              );
+            })
         );
       }
     });
   }
-  getAppointments(id) {
-    this.appointments$ = this.portalService.getHospitalAppointments(id);
+  getAppointments(
+    available: boolean = false,
+    made: boolean = false,
+    assigned: boolean = false
+  ) {
+    switch (this.chosenRadioButton) {
+      case AppointmentState.Available:
+        available = true;
+        break;
+      case AppointmentState.Made:
+        made = true;
+        break;
+      case AppointmentState.Assigned:
+        assigned = true;
+        break;
+    }
+    this.appointments$ = this.portalService.getHospitalAppointments(
+      available,
+      made,
+      assigned
+    );
+  }
+  doneAppointment(a: Appointment) {
+    this.portalService.madeAppointment(a).subscribe((a) => {
+      this.getAppointments();
+      this.toastrService.success('Pomyślnie zmieniono status szczepienia');
+    });
+  }
+
+  cancelAppointment(a: Appointment) {
+    this.portalService.notMadeAppointment(a).subscribe((a) => {
+      this.getAppointments();
+      this.toastrService.success(
+        'Pomyślnie odwołono szczepienie dla danego pacjenta'
+      );
+    });
   }
 }

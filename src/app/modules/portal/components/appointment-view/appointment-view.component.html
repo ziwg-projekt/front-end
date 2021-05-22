@@ -1,7 +1,9 @@
 <mat-card
   class="appointment-container"
   [ngClass]="{
-    'border-confirmed': appointment.state === appointmentState.Available || appointment.state === appointmentState.Assigned,
+    'border-confirmed':
+      appointment.state === appointmentState.Available ||
+      appointment.state === appointmentState.Assigned,
     'border-cancelled': appointment.state === appointmentState.Not_made,
     'border-finished': appointment.state === appointmentState.Made
   }"
@@ -10,15 +12,33 @@
     ><span class="title-container" fxLayout="row" fxLayoutAlign="center center"
       >Dane szczepienia</span
     >
-    <div class="icons-container" *ngIf="appointment.citizen">
-      <button mat-icon-button class="accept-button" (click)="doneAppointment($event)"><mat-icon>done</mat-icon></button
-      ><button mat-icon-button color="warn" (click)="cancelAppointment($event)"><mat-icon>close</mat-icon></button>
+    <div
+      class="icons-container"
+      *ngIf="
+        appointment.citizen && appointment.state === appointmentState.Assigned
+      "
+    >
+      <button
+        mat-icon-button
+        class="accept-button"
+        (click)="doneAppointmentDialog($event)"
+      >
+        <mat-icon>done</mat-icon></button
+      ><button
+        mat-icon-button
+        color="warn"
+        (click)="cancelAppointmentDialog($event)"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
     </div></mat-card-header
   >
   <mat-card-content class="card-content-container">
     <div *ngIf="appointment.citizen">
       <span class="title-container">Pacjent:</span>
-      <span class="details-container" >{{ appointment.citizen.name }} {{ appointment.citizen.surname }}</span>
+      <span class="details-container"
+        >{{ appointment.citizen.name }} {{ appointment.citizen.surname }}</span
+      >
     </div>
     <div>
       <span class="title-container">Termin:</span>

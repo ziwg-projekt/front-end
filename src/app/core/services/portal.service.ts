@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
 import { environment } from 'src/environments/environment';
 import { Vaccine } from '../models/vaccine';
@@ -30,8 +30,9 @@ export class PortalService {
     );
   }
 
-  getHospitalAppointments(id): Observable<any> {
-    return this.http.get(this.host + `v1/hospitals/${id}/appointments`);
+  getHospitalAppointments(available:boolean = false,made:boolean = false,assigned:boolean = false): Observable<any> {
+    let params = new HttpParams().set("made",made.toString()).set("available", available.toString()).set("assigned", assigned.toString());
+    return this.http.get(this.host + `v1/users/self/appointments`,{params:params});
   }
 
   getPatients(): Observable<any> {
@@ -48,25 +49,23 @@ export class PortalService {
     );
   }
 
-  addCitizenToAppointment(appointment: Appointment): Observable<Appointment> {
-    return this.http.patch<Appointment>(
-      this.host + `v1/appointments/${appointment.id}/actions/enroll`,
-      appointment
+  addCitizenToAppointmentHospital(appointment: Appointment): Observable<any> {
+    return this.http.patch(
+      this.host + `v1/appointments/${appointment.id}/hospital/actions/enroll`,
+      {
+        pesel:appointment.citizen.pesel
+      }
     );
   }
 
-  notMadeAppointment(
-    appointment: Appointment
-  ): Observable<Appointment> {
+  notMadeAppointment(appointment: Appointment): Observable<Appointment> {
     return this.http.patch<Appointment>(
       this.host + `v1/appointments/${appointment.id}/actions/not-made`,
       appointment
     );
   }
 
- madeAppointment(
-    appointment: Appointment
-  ): Observable<Appointment> {
+  madeAppointment(appointment: Appointment): Observable<Appointment> {
     return this.http.patch<Appointment>(
       this.host + `v1/appointments/${appointment.id}/actions/made`,
       appointment
@@ -114,5 +113,13 @@ export class PortalService {
       this.host + 'v1/auth/registration/hospital/citizen/register',
       newPatient
     );
+  }
+
+  getDoctors(id): Observable<any> {
+    return this.http.get(this.host + `v1/hospitals/${id}/doctors`);
+  }
+
+  changeDoctorsAmount(): Observable<any> {
+    return this.http.put(this.host + `v1/doctors`,{});
   }
 }

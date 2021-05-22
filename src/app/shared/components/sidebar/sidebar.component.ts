@@ -53,6 +53,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
           { icon: 'security', label: 'Szczepionki', href: '/portal/vaccines' },
           { icon: 'people', label: 'Pacjenci', href: '/portal/patients' },
           { icon: 'calendar_today', label: 'Szczepienia', href: '/portal/appointments' },
+          { icon: 'medication', label: 'Kadra lekarzy', href: '/portal/doctors' },
         ];
         break;
       case Authority.Citizen:

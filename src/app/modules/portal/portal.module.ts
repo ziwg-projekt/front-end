@@ -12,9 +12,9 @@ import { PatientsComponent } from './pages/patients/patients.component';
 import { AppointmentViewComponent } from './components/appointment-view/appointment-view.component';
 import { NewAppointmentDialogComponent } from './components/new-appointment-dialog/new-appointment-dialog.component';
 import { AppointmentStateTranslatorPipe } from 'src/app/core/pipes/appointment-state-translator.pipe';
-import { DatePipe } from '@angular/common';
 import { AppointmentsComponent } from './pages/appointments/appointments.component';
 import { AppointmentConfirmDialogComponent } from './components/appointment-confirm-dialog/appointment-confirm-dialog.component';
+import { DoctorsComponent } from './pages/doctors/doctors.component';
 @NgModule({
   declarations: [
     PortalComponent,
@@ -24,7 +24,8 @@ import { AppointmentConfirmDialogComponent } from './components/appointment-conf
     NewAppointmentDialogComponent,
     AppointmentStateTranslatorPipe,
     AppointmentsComponent,
-    AppointmentConfirmDialogComponent
+    AppointmentConfirmDialogComponent,
+    DoctorsComponent
   ],
   imports: [
     CommonModule,
@@ -36,6 +37,5 @@ import { AppointmentConfirmDialogComponent } from './components/appointment-conf
     PortalRoutingModule,
   ],
   exports: [PortalComponent],
-  providers: [DatePipe],
 })
 export class PortalModule {}
