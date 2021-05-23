@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
 import { environment } from 'src/environments/environment';
 import { Vaccine } from '../models/vaccine';
 import { User } from '../models/user';
 import { Appointment } from '../models/appointment';
 import { Citizen } from '../models/citizen';
-import { AppointmentDto } from '../models/appointment-dto';
 import { CitizenRegisterDto } from '../models/citizen-register-dto';
 
 @Injectable({
@@ -72,14 +71,16 @@ export class PortalService {
     );
   }
 
-  addVacine(vaccineForm: Vaccine): Observable<Vaccine> {
-    return this.http.post<Vaccine>(this.host + 'v1/vaccines', {
-      code: vaccineForm.code,
-      company: vaccineForm.company,
-      hospital: vaccineForm.hospital,
-      state: vaccineForm.state,
-      type: vaccineForm.type,
-    });
+  addVacine(vaccineForm): Observable<any>{
+    return this.http.post(this.host + 'v1/vaccines', vaccineForm);
+  }
+
+  addVacines(vaccineForm): Observable<any>{
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+     });
+    let options = { headers: headers };
+    return this.http.post(this.host + 'v1/vaccines', vaccineForm, options);
   }
 
   getStatistics(id: number): Observable<any> {
@@ -114,7 +115,6 @@ export class PortalService {
       newPatient
     );
   }
-
   getDoctors(id): Observable<any> {
     return this.http.get(this.host + `v1/hospitals/${id}/doctors`);
   }

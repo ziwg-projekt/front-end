@@ -111,7 +111,7 @@
         class="appointment-view-container"
         *ngIf="appointments.length > 0; else noAppointments"
       >
-        <app-appointment-view *ngFor="let a of appointments" [appointment]="a" (click)="openAppointmentDialog(a)"></app-appointment-view>
+        <app-appointment-view *ngFor="let a of appointments" [appointment]="a" (click)="openAppointmentDialog(a)" (doneAppointment)="doneAppointment(a)" (cancelAppointment)="cancelAppointment(a)"></app-appointment-view>
       </div>
 
       <ng-template #noAppointments

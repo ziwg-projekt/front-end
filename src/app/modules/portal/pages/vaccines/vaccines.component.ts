@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { VaccineType } from 'src/app/core/enums/vaccine-type.enum';
 import { PortalService } from 'src/app/core/services/portal.service';
+import { VaccineDto } from 'src/app/core/models/vaccine-dto';
 
 @Component({
   selector: 'app-vaccines',
@@ -33,7 +34,8 @@ export class VaccinesComponent implements OnDestroy, OnInit {
   ];
   chosenStatistic: Statistic = this.statisticsTypes[0];
   vaccineState = VaccineState;
-
+  vaccinesFromFile: VaccineDto[] = [];
+  fileName: string = '';
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -61,10 +63,7 @@ export class VaccinesComponent implements OnDestroy, OnInit {
   initFormGroup() {
     this.vaccineFormGroup = this.fb.group({
       code: [null, Validators.required],
-      company: [null, Validators.required],
-      hospital: [this.hospital],
-      state: [VaccineState.Available],
-      type: [null, Validators.required],
+      company_name: [null, Validators.required],
     });
   }
 
@@ -107,5 +106,37 @@ export class VaccinesComponent implements OnDestroy, OnInit {
         return statistics.sort((a, b) => b.assigned - a.assigned);
       }
     }
+  }
+
+  handleFileInput(files: FileList) {
+    const fileToLoad = files.item(0);
+    this.fileName = "";
+    if (fileToLoad.type == 'application/json') {
+      this.fileName = fileToLoad.name;
+      const fileReader = new FileReader();
+
+      fileReader.onloadend = (e) => {
+        this.vaccinesFromFile = JSON.parse(
+          JSON.stringify(fileReader.result.toString())
+        );
+      };
+      fileReader.readAsText(fileToLoad, 'UTF-8');
+    } else {
+      this.toastr.warning('Typem pliku musi być JSON');
+    }
+  }
+  addFileVaccines() {
+    this.subscriptions.push(
+      this.portalService.addVacines(this.vaccinesFromFile).subscribe(
+        (data) => {
+          this.initFormGroup();
+          this.toastr.success('Dodano szczepionki');
+          this.getStatistics(this.hospital.id);
+        },
+        (error) => {
+          this.toastr.error('Nie udało się dodać szczepionek');
+        }
+      )
+    );
   }
 }

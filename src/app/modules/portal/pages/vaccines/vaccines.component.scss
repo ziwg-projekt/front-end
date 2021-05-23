@@ -1,6 +1,34 @@
 @import "src/assets/scss/colors";
 @import "../../portal.component.scss";
 
+section {
+  height: 90%;
+}
+.file-container {
+  text-align: center;
+  input[type="file"] {
+    display: none;
+  }
+  .custom-file-upload {
+    display: inline-block;
+    cursor: pointer;
+    padding: 0.5em;
+    font-size: 18px;
+    border-radius: 60px;
+    mat-icon {
+      color: $color-dark-pink;
+      margin-right: 5px;
+    }
+  }
+  .custom-file-upload:hover {
+    background-color: $color-light-pink;
+    transition: 0.5s;
+  }
+
+  button {
+    margin-left: 20px;
+  }
+}
 form,
 .statistics-container {
   min-height: 450px;

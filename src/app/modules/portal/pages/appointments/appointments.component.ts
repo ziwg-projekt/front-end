@@ -53,7 +53,8 @@ export class AppointmentsComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().subscribe((data) => {
       if (data.citizen) {
-        let appointmentToUpdate:Appointment = appointment;
+        let appointmentToUpdate:Appointment;
+        appointmentToUpdate = Object.assign({},appointment)
         appointmentToUpdate.citizen = data.citizen;
         this.subscriptions.push(
           this.portalService

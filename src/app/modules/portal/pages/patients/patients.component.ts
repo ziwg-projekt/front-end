@@ -15,7 +15,6 @@ import { Citizen } from 'src/app/core/models/citizen';
 import { Hospital } from 'src/app/core/models/hospital';
 import { PortalService } from 'src/app/core/services/portal.service';
 import { NewAppointmentDialogComponent } from '../../components/new-appointment-dialog/new-appointment-dialog.component';
-import { DatePipe } from '@angular/common';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { AppointmentDto } from 'src/app/core/models/appointment-dto';
 
@@ -40,7 +39,6 @@ export class PatientsComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private portalService: PortalService,
     public dialog: MatDialog,
-    private datePipe: DatePipe,
     private authService: AuthService
   ) {
     this.subscriptions.push(
@@ -192,9 +190,24 @@ export class PatientsComponent implements OnInit, OnDestroy {
       height: '500px',
       data: {
         hospitalId: this.hospital.id,
-        //citizen: this.currentCitizen,
         appointment: a,
       },
+    });
+  }
+
+  doneAppointment(a: Appointment) {
+    this.portalService.madeAppointment(a).subscribe((a) => {
+      this.getAppointments();
+      this.toastr.success('Pomyślnie zmieniono status szczepienia');
+    });
+  }
+
+  cancelAppointment(a: Appointment) {
+    this.portalService.notMadeAppointment(a).subscribe((a) => {
+      this.getAppointments();
+      this.toastr.success(
+        'Pomyślnie odwołono szczepienie dla danego pacjenta'
+      );
     });
   }
 }
