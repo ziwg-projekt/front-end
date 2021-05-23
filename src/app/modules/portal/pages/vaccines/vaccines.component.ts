@@ -36,6 +36,7 @@ export class VaccinesComponent implements OnDestroy, OnInit {
   vaccineState = VaccineState;
   vaccinesFromFile: VaccineDto[] = [];
   fileName: string = '';
+  fileToLoad: File;
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -109,24 +110,25 @@ export class VaccinesComponent implements OnDestroy, OnInit {
   }
 
   handleFileInput(files: FileList) {
-    const fileToLoad = files.item(0);
-    this.fileName = "";
-    if (fileToLoad.type == 'application/json') {
-      this.fileName = fileToLoad.name;
+    this.fileToLoad = files.item(0);
+    this.fileName = '';
+    if (this.fileToLoad.type == 'application/json') {
+      this.fileName = this.fileToLoad.name;
       const fileReader = new FileReader();
 
       fileReader.onloadend = (e) => {
         this.vaccinesFromFile = JSON.parse(
-          JSON.stringify(fileReader.result.toString())
+          //JSON.stringify()
+          fileReader.result.toString()
         );
       };
-      fileReader.readAsText(fileToLoad, 'UTF-8');
+      fileReader.readAsText(this.fileToLoad, 'UTF-8');
     } else {
       this.toastr.warning('Typem pliku musi być JSON');
     }
   }
   addFileVaccines() {
-    this.subscriptions.push(
+    /*this.subscriptions.push(
       this.portalService.addVacines(this.vaccinesFromFile).subscribe(
         (data) => {
           this.initFormGroup();
@@ -137,6 +139,13 @@ export class VaccinesComponent implements OnDestroy, OnInit {
           this.toastr.error('Nie udało się dodać szczepionek');
         }
       )
-    );
+    );*/
+    this.vaccinesFromFile.forEach((v) => {
+      this.subscriptions.push(this.portalService.addVacine(v).subscribe());
+    });
+    this.toastr.success('Dodano szczepionki');
+    this.fileName = null;
+    this.fileToLoad = null;
+    this.getStatistics(this.hospital.id);
   }
 }

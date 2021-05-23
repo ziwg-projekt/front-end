@@ -7,6 +7,7 @@ import { User } from '../models/user';
 import { Appointment } from '../models/appointment';
 import { Citizen } from '../models/citizen';
 import { CitizenRegisterDto } from '../models/citizen-register-dto';
+import { VaccineDto } from '../models/vaccine-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +24,10 @@ export class PortalService {
     return this.http.get<Citizen>(this.host + `v1/citizens/${pesel}`);
   }
 
+  getCitizenFromGovernmentApi(pesel: string): Observable<Citizen> {
+    return this.http.get<Citizen>(this.host + `v1/citizens/all/${pesel}`);
+  }
+  
   getPatientAppointments(pesel: string): Observable<Appointment[]> {
     return this.http.get<Appointment[]>(
       this.host + `v1/citizens/${pesel}/appointments`
@@ -80,7 +85,7 @@ export class PortalService {
       'Content-Type': 'application/json'
      });
     let options = { headers: headers };
-    return this.http.post(this.host + 'v1/vaccines', vaccineForm, options);
+    return this.http.post(this.host + 'v1/vaccines', vaccineForm,options);
   }
 
   getStatistics(id: number): Observable<any> {
@@ -99,19 +104,17 @@ export class PortalService {
     return this.http.post(this.host + 'v1/hospitals', hospital);
   }
 
-  addPatientInHospital(patient): Observable<any> {
+  addPatientInHospital(patient): Observable<Citizen> {
     let newPatient: CitizenRegisterDto = {
       city: patient.city,
       password: patient.password,
-      email: patient.email,
-      phone_number: patient.phone_number,
       street: patient.street,
       street_number: patient.street_number,
       username: patient.username,
     };
 
-    return this.http.post(
-      this.host + 'v1/auth/registration/hospital/citizen/register',
+    return this.http.post<Citizen>(
+      this.host + `v1/auth/registration/hospital/citizen/${patient.pesel}/register`,
       newPatient
     );
   }
