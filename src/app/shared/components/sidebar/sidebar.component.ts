@@ -52,12 +52,14 @@ export class SidebarComponent implements OnInit, OnDestroy {
         this.menuItems = [
           { icon: 'security', label: 'Szczepionki', href: '/portal/vaccines' },
           { icon: 'people', label: 'Pacjenci', href: '/portal/patients' },
+          { icon: 'calendar_today', label: 'Szczepienia', href: '/portal/appointments' },
+          { icon: 'medication', label: 'Kadra lekarzy', href: '/portal/doctors' },
         ];
-        this.currentStep = 'Szczepionki';
         break;
       case Authority.Citizen:
         break;
     }
+    this.currentStep = this.checkActualStep();
   }
 
   private initFormItems(): void {

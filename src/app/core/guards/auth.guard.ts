@@ -16,7 +16,6 @@ export class AuthGuard implements CanActivate {
   checkUserLogin(route: ActivatedRouteSnapshot, url: any): boolean {
     if (this.auth.isLoggedIn()) {
       const userRole = this.auth.userRole;
-      console.log(route.data.role);
       if (route.data.role !== userRole) {
         this.router.navigate(['/registration']);
         return false;

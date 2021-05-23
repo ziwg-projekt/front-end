@@ -1,0 +1,14 @@
+<div class="dialog-container">
+  <div mat-dialog-content *ngIf="data.mode == 'cancel'">
+    <h2>Czy na pewno chcesz odwołać szczepienie pacjenta?</h2>
+  </div>
+  <div mat-dialog-content *ngIf="data.mode == 'confirm'">
+    <h2>Czy na pewno wykonano szczepienie?</h2>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button [mat-dialog-close]>Nie</button>
+    <button mat-raised-button [mat-dialog-close]="true" cdkFocusInitial>
+      Tak
+    </button>
+  </div>
+</div>

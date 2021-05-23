@@ -2,10 +2,10 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { Doctor } from 'src/app/core/models/doctor';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Vaccine } from 'src/app/core/models/vaccine';
 import { PortalService } from 'src/app/core/services/portal.service';
+import { Citizen } from 'src/app/core/models/citizen';
 @Component({
   selector: 'app-new-appointment-dialog',
   templateUrl: './new-appointment-dialog.component.html',
@@ -13,12 +13,10 @@ import { PortalService } from 'src/app/core/services/portal.service';
 })
 export class NewAppointmentDialogComponent implements OnInit {
   appointmentForm: FormGroup;
-  doctors$: Observable<Doctor[]> = this.portalService.getDoctors(
-    this.data.hospitalId
-  );
   vaccines$: Observable<Vaccine[]> = this.portalService.getHospitalVaccines(
     this.data.hospitalId
   );
+  citizens$ = this.portalService.getPatients();
   minDate: Date = new Date();
 
   constructor(
@@ -34,10 +32,9 @@ export class NewAppointmentDialogComponent implements OnInit {
 
   initForm() {
     this.appointmentForm = this.fb.group({
-      date: [undefined, Validators.required],
-      doctor: [undefined, Validators.required],
-      vaccine: [undefined, Validators.required],
-      citizen: [this.data.citizen],
+      date: [undefined],
+      vaccine: [undefined],
+      citizen: [undefined, Validators.required],
     });
     if (this.data.appointment) {
       this.appointmentForm.patchValue(this.data.appointment);
@@ -45,7 +42,11 @@ export class NewAppointmentDialogComponent implements OnInit {
   }
 
   get getCitizenFullName() {
-    return this.data.citizen.name + ' ' + this.data.citizen.surname;
+    return this.appointmentForm.get("citizen").value.name + ' ' + this.appointmentForm.get("citizen").value.surname;
+  }
+
+  get getVaccine() {
+    return this.appointmentForm.get("vaccine").value.company.name + " - " + this.appointmentForm.get("vaccine").value.code;
   }
 
   addAppointment() {

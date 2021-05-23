@@ -1,0 +1,47 @@
+<form
+  [formGroup]="appointmentForm"
+  fxLayout="column"
+  fxLayoutAlign="space-between center"
+>
+  <button mat-icon-button class="close-button" [mat-dialog-close]="true">
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+  </button>
+  <span class="title-container">Dane szczepienia</span>
+  <mat-form-field appearance="outline" class="form-control-container" *ngIf="data.appointment.citizen else newAppointmentCitizen">
+    <mat-label>Pacjent</mat-label>
+    <input
+      matInput
+      [ngModel]="getCitizenFullName"
+      [ngModelOptions]="{ standalone: true }"
+      readonly
+    />
+  </mat-form-field>
+  <ng-template #newAppointmentCitizen>
+  <mat-form-field appearance="outline" class="form-control-container" *ngIf="citizens$ | async as citizens">
+    <mat-label>Pacjent</mat-label>
+    <mat-select formControlName="citizen">
+      <mat-option *ngFor="let c of $any(citizens.content)" [value]="c">{{c.name}} {{c.surname}}</mat-option></mat-select>
+      <mat-error *ngIf="appointmentForm.controls.citizen.errors?.required">
+        Proszę wybrać pacjenta
+      </mat-error>
+    </mat-form-field>
+    </ng-template>
+<mat-form-field appearance="outline" class="form-control-container">
+    <mat-label>Termin</mat-label>
+    <input
+      matInput
+      readonly
+      formControlName="date"
+    />
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="form-control-container">
+    <mat-label>Szczepionka</mat-label>
+    <input
+      matInput
+      readonly
+      [ngModel]="getVaccine"
+      [ngModelOptions]="{ standalone: true }"
+    />
+  </mat-form-field>
+  <button *ngIf="data.appointment.citizen == null" mat-stroked-button color="primary" (click)="addAppointment()" type="button">Dodaj</button>
+</form>

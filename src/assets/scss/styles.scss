@@ -24,6 +24,9 @@ $custom-typography: mat-typography-config(
 
 @include angular-material-typography($custom-typography);
 
+*{
+  box-sizing: border-box;
+}
 html, body {
   height: 100%;
   margin: 0;

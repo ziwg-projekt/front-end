@@ -1,8 +1,9 @@
 @import "src/assets/scss/colors";
-@import "../../../portal.component.scss";
+@import "../../portal.component.scss";
 form {
     position: relative;
     height:100%;
+    padding:1em;
   }
 .close-button {
   position: absolute;
