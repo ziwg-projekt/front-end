@@ -140,12 +140,17 @@ export class VaccinesComponent implements OnDestroy, OnInit {
         }
       )
     );*/
-    this.vaccinesFromFile.forEach((v) => {
-      this.subscriptions.push(this.portalService.addVacine(v).subscribe());
+    this.vaccinesFromFile.forEach((v, index, array) => {
+      this.subscriptions.push(
+        this.portalService.addVacine(v).subscribe(() => {
+          if (index === array.length - 1) {
+            this.getStatistics(this.hospital.id);
+          }
+        })
+      );
     });
     this.toastr.success('Dodano szczepionki');
     this.fileName = null;
     this.fileToLoad = null;
-    this.getStatistics(this.hospital.id);
   }
 }
