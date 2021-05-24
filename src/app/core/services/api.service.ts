@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {CitizenNotifyModel} from '../models/citizen-notify.model';
 import {environment} from '../../../environments/environment';
-import {catchError} from 'rxjs/operators';
+import {catchError, map} from 'rxjs/operators';
 import {error} from '@angular/compiler/src/util';
 
 @Injectable({
@@ -26,6 +26,17 @@ export class ApiService {
     return this.http.post(`${environment.host}v1/auth/registration/citizen/notify`, personalData);
   }
 
+  getHospitalsCounter(): Observable<any> {
+    return this.http.get(`${environment.host}v1/hospitals`).pipe(
+      map((h:any)=>{
+        return h.content.length;
+      })
+    );
+  }
+  
+  getVaccinetedCounter(): Observable<any> {
+    return this.http.get(`${environment.host}v1/citizens/vaccinated`);
+  }
 }
 
 
