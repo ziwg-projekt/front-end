@@ -9,7 +9,7 @@
         matSuffix
         mat-icon-button
         color="warn"
-        (click)="resetSearch()"
+        (click)="resetValues()"
       >
         <mat-icon>close</mat-icon>
       </button>
@@ -24,53 +24,61 @@
       </button>
       <mat-error>Błędny numer PESEL</mat-error>
     </mat-form-field>
-    <mat-slide-toggle class="new-user-container" (click)="newUserToggle()"
+    <mat-slide-toggle
+      class="new-user-container"
+      [(ngModel)]="isNewCitizenRegister"
+      (ngModelChange)="resetValues()"
       >Rejestracja nowego użytkownika</mat-slide-toggle
     >
   </div>
-  <div fxLayout="column" fxLayout.gt-md="row" fxLayoutGap="30px" fxLayoutAlign="center">
-    <div class="form-container" fxLayoutAlign="start center"  fxFlex="100" fxFlex.gt-md="50">
+  <div
+    fxLayout="column"
+    fxLayout.gt-md="row"
+    fxLayoutGap="30px"
+    fxLayoutAlign="center"
+  >
+    <div
+      class="form-container"
+      fxLayoutAlign="start center"
+      fxFlex="100"
+      fxFlex.gt-md="50"
+    >
       <form
-        *ngIf="enableForm"
+        *ngIf="currentCitizen"
         [formGroup]="citizenForm"
         fxLayout="column"
         fxLayoutAlign="space-between center"
       >
         <span class="title-container">Dane pacjenta</span>
-        <mat-form-field appearance="outline" *ngIf="personalId.disabled">
+        <mat-form-field appearance="outline">
+          <mat-label>Imię</mat-label>
+          <input matInput type="text" formControlName="name" readonly />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Nazwisko</mat-label>
+          <input matInput type="text" formControlName="surname" readonly />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput type="text" formControlName="email" readonly />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>PESEL</mat-label>
+          <input matInput type="text" formControlName="pesel" readonly />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Nr telefonu</mat-label>
+          <input matInput type="text" formControlName="phone_number" readonly />
+        </mat-form-field>
+        <mat-form-field appearance="outline" *ngIf="isNewCitizenRegister">
           <mat-label>Nazwa użytkownika</mat-label>
           <input matInput type="text" formControlName="username" />
           <mat-error>Nazwa użytkownika jest wymagana</mat-error>
         </mat-form-field>
-        <mat-form-field appearance="outline" *ngIf="personalId.disabled">
+        <mat-form-field appearance="outline" *ngIf="isNewCitizenRegister">
           <mat-label>Hasło</mat-label>
           <input matInput type="password" formControlName="password" />
           <mat-error>Hasło jest wymagane</mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="outline" *ngIf="!personalId.disabled">
-          <mat-label>Imię</mat-label>
-          <input matInput type="text" formControlName="name" readonly/>
-          <mat-error>Imię jest wymagane</mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="outline" *ngIf="!personalId.disabled">
-          <mat-label>Nazwisko</mat-label>
-          <input matInput type="text" formControlName="surname" readonly/>
-          <mat-error>Nazwisko jest wymagane</mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Email</mat-label>
-          <input matInput type="text" formControlName="email" />
-          <mat-error>Niewłaściwy email</mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="outline" *ngIf="!personalId.disabled">
-          <mat-label>PESEL</mat-label>
-          <input matInput type="text" formControlName="pesel" readonly/>
-          <mat-error>PESEL jest wymagany</mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Nr telefonu</mat-label>
-          <input matInput type="text" formControlName="phone_number" />
-          <mat-error>Niewłaściwy numer telefonu</mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Miasto</mat-label>
@@ -93,8 +101,8 @@
           class="primary-button"
           (click)="submitForm()"
         >
-          <span *ngIf="personalId.value">Edytuj</span
-          ><span *ngIf="!personalId.value">Dodaj</span>
+          <span *ngIf="!isNewCitizenRegister">Edytuj</span
+          ><span *ngIf="isNewCitizenRegister">Dodaj</span>
         </button>
       </form>
     </div>
@@ -111,7 +119,13 @@
         class="appointment-view-container"
         *ngIf="appointments.length > 0; else noAppointments"
       >
-        <app-appointment-view *ngFor="let a of appointments" [appointment]="a" (click)="openAppointmentDialog(a)" (doneAppointment)="doneAppointment(a)" (cancelAppointment)="cancelAppointment(a)"></app-appointment-view>
+        <app-appointment-view
+          *ngFor="let a of appointments"
+          [appointment]="a"
+          (click)="openAppointmentDialog(a)"
+          (doneAppointment)="doneAppointment(a)"
+          (cancelAppointment)="cancelAppointment(a)"
+        ></app-appointment-view>
       </div>
 
       <ng-template #noAppointments

@@ -8,15 +8,12 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { CitizenStateType } from 'src/app/core/enums/citizen-state.enum';
 import { Appointment } from 'src/app/core/models/appointment';
 import { Citizen } from 'src/app/core/models/citizen';
 import { Hospital } from 'src/app/core/models/hospital';
 import { PortalService } from 'src/app/core/services/portal.service';
 import { NewAppointmentDialogComponent } from '../../components/new-appointment-dialog/new-appointment-dialog.component';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { AppointmentDto } from 'src/app/core/models/appointment-dto';
 
 @Component({
   selector: 'app-patients',
@@ -31,7 +28,7 @@ export class PatientsComponent implements OnInit, OnDestroy {
   citizenForm: FormGroup;
   subscriptions: Subscription[] = [];
   appointments$: Observable<Appointment[]>;
-  enableForm: boolean = false;
+  isNewCitizenRegister: boolean = false;
   hospital: Hospital;
   currentCitizen: Citizen;
   constructor(
@@ -61,67 +58,91 @@ export class PatientsComponent implements OnInit, OnDestroy {
 
   searchPatient() {
     if (this.personalId.valid && this.personalId.value != '') {
-      this.subscriptions.push(
-        this.portalService.getPatient(this.personalId.value).subscribe(
-          //pomocniczy pesel 99110323923
-          (c) => {
-            this.patchValueOfCitizen(c);
-            this.currentCitizen = c;
-            this.enableForm = true;
-            this.getAppointments();
-          },
-          (error) => {
-            this.toastr.warning(
-              `Nie ma takiego pacjenta z numerem PESEL ${this.personalId.value}`
-            );
-          }
-        )
-      );
+      //looking for patient in hospital
+      console.log(this.isNewCitizenRegister);
+      if (!this.isNewCitizenRegister) {
+        this.subscriptions.push(
+          this.portalService.getPatient(this.personalId.value).subscribe(
+            //pomocniczy pesel 99110323923
+            (c) => {
+              this.patchValueOfCitizen(c);
+              this.currentCitizen = c;
+              this.getAppointments();
+            },
+            (error) => {
+              this.toastr.warning(
+                `Nie ma takiego pacjenta z numerem PESEL ${this.personalId.value}`
+              );
+            }
+          )
+        );
+        //looking for citizen from government api
+      } else {
+        this.subscriptions.push(
+          this.portalService
+            .getCitizenFromGovernmentApi(this.personalId.value)
+            .subscribe(
+              //pomocniczy pesel 56111245968
+              (c) => {
+                this.patchValueOfCitizen(c);
+                this.currentCitizen = c;
+              },
+              (error) => {
+                this.toastr.warning(
+                  `Nie ma takiego pacjenta z numerem PESEL ${this.personalId.value}`
+                );
+              }
+            )
+        );
+      }
     }
   }
 
   initForm() {
     this.citizenForm = this.fb.group({
-      address:[undefined],
-      email: [undefined, Validators.pattern("[A-Za-z0-9._%-]+@[A-Za-z0-9._%-]+\\.[a-z]{2,3}")],
+      email: [undefined],
       name: [undefined],
       surname: [undefined],
       pesel: [undefined],
-      phone_number: [undefined, Validators.pattern("[0-9]{9}")],
+      phone_number: [undefined],
+      username: [undefined],
+      password: [undefined],
+      address: [undefined],
       city: [undefined, Validators.required],
       street: [undefined, Validators.required],
       street_number: [undefined, Validators.required],
-      username: [undefined],
-      password: [undefined],
     });
   }
 
   submitForm() {
-    if (!this.personalId.value) {
-      this.citizenForm.get("username").setValidators(Validators.required);
-      this.citizenForm.get("password").setValidators(Validators.required);
+    if (this.isNewCitizenRegister) {
+      this.citizenForm.get('username').setValidators(Validators.required);
+      this.citizenForm.get('password').setValidators(Validators.required);
       if (this.citizenForm.valid) {
-      this.subscriptions.push(
-        this.portalService
-          .addPatientInHospital(this.citizenForm.value)
-          .subscribe(
-            (c) => {
-              this.patchValueOfCitizen(c);
-              this.currentCitizen = c;
-              this.toastr.success('Pomyslnie dodano pacjenta');
-            },
-            (e) => {
-              this.toastr.error('Błąd podczas rejestracji pacjenta');
-            }
-          )
-      );
-        }else{
-          this.citizenForm.markAllAsTouched();
-          this.toastr.warning('Proszę wypełnić wymagane pola');
-        }
+        this.subscriptions.push(
+          this.portalService
+            .addPatientInHospital(this.citizenForm.value)
+            .subscribe(
+              (c) => {
+                this.patchValueOfCitizen(c);
+                this.currentCitizen = c;
+                this.isNewCitizenRegister = false;
+                this.toastr.success('Pomyslnie dodano pacjenta');
+              },
+              (e) => {
+                this.toastr.error(
+                  'Pacjent o podanym numerze PESEl jest już zarejestrowany w szpitalu'
+                );
+              }
+            )
+        );
+      } else {
+        this.citizenForm.markAllAsTouched();
+        this.toastr.warning('Proszę wypełnić wymagane pola');
+      }
     } else {
-      this.citizenForm.get("username").clearValidators();
-      this.citizenForm.get("password").clearValidators();
+      this.citizenForm.get('username').clearValidators();
+      this.citizenForm.get('password').clearValidators();
       if (this.citizenForm.valid) {
         this.subscriptions.push(
           this.portalService
@@ -137,7 +158,7 @@ export class PatientsComponent implements OnInit, OnDestroy {
               }
             )
         );
-      }else{
+      } else {
         this.citizenForm.markAllAsTouched();
         this.toastr.warning('Proszę wypełnić wymagane pola');
       }
@@ -146,34 +167,20 @@ export class PatientsComponent implements OnInit, OnDestroy {
 
   patchValueOfCitizen(citizen: Citizen) {
     this.citizenForm.patchValue(citizen);
-    this.citizenForm.get('city').setValue(citizen.address.city);
-    this.citizenForm.get('street').setValue(citizen.address.street);
-    this.citizenForm
-      .get('street_number')
-      .setValue(citizen.address.street_number);
-  }
-
-  newUserToggle() {
-    if ((this.enableForm && this.personalId.enabled) || !this.enableForm) {
-      this.enableForm = true;
-      this.personalId.disable();
-    } else if (this.enableForm && !this.personalId.enabled) {
-      this.enableForm = false;
-      this.personalId.enable();
-    }
-    this.resetValues();
-  }
-
-  resetSearch() {
-    if (this.personalId.enabled) {
-      this.resetValues();
-      this.enableForm = false;
+    if (citizen.address) {
+      this.citizenForm.get('city').setValue(citizen.address.city);
+      this.citizenForm.get('street').setValue(citizen.address.street);
+      this.citizenForm
+        .get('street_number')
+        .setValue(citizen.address.street_number);
     }
   }
 
   resetValues() {
+    if (!this.isNewCitizenRegister) this.isNewCitizenRegister = false;
     this.personalId.reset();
     this.citizenForm.reset();
+    this.currentCitizen = null;
     this.appointments$ = null;
   }
 
@@ -182,7 +189,6 @@ export class PatientsComponent implements OnInit, OnDestroy {
       this.currentCitizen.pesel
     );
   }
-  
 
   openAppointmentDialog(a: Appointment) {
     const dialogRef = this.dialog.open(NewAppointmentDialogComponent, {
@@ -205,9 +211,7 @@ export class PatientsComponent implements OnInit, OnDestroy {
   cancelAppointment(a: Appointment) {
     this.portalService.notMadeAppointment(a).subscribe((a) => {
       this.getAppointments();
-      this.toastr.success(
-        'Pomyślnie odwołono szczepienie dla danego pacjenta'
-      );
+      this.toastr.success('Pomyślnie odwołono szczepienie dla danego pacjenta');
     });
   }
 }
