@@ -32,8 +32,9 @@ import { RegistrationDataDialogComponent } from './components/registration-data-
     ChartsModule,
     FlexLayoutModule
   ],
-  exports: [
-    RegistrationFormComponent
-  ]
+    exports: [
+        RegistrationFormComponent,
+        MapComponent
+    ]
 })
 export class RegistrationFormModule { }

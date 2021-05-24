@@ -1,0 +1,24 @@
+.main-container {
+  height: 100%;
+  width: 100%;
+  border-radius: 60px;
+  background:url("../../../../assets/images/hospital-hall.jpg") rgb(153, 150, 164);
+  background-blend-mode: multiply;
+  background-size: cover;
+  box-shadow: inset 0 0 20px 10px rgba(0,0,0,0.4);
+}
+
+.info-section {
+  height: 100px;
+  padding: 40px;
+  text-align: center;
+  background-color: white;
+  border-radius: 30px;
+
+  p {
+    margin: 0;
+    font-size: 24px;
+    line-height: 1.4;
+    color: #42427d;
+  }
+}

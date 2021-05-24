@@ -54,3 +54,7 @@ body {
       color: $color-purple;
   }
 }
+
+.mapboxgl-marker {
+  cursor: pointer;
+}

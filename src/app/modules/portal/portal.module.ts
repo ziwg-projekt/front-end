@@ -36,6 +36,6 @@ import { DoctorsComponent } from './pages/doctors/doctors.component';
     ReactiveFormsModule,
     PortalRoutingModule,
   ],
-  exports: [PortalComponent]
+    exports: [PortalComponent, AppointmentViewComponent]
 })
 export class PortalModule {}

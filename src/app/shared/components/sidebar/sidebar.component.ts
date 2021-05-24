@@ -57,6 +57,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
         ];
         break;
       case Authority.Citizen:
+        this.menuItems = [
+          { icon: 'security', label: 'Szczepienie', href: '/patient/info' },
+          { icon: 'location_on', label: 'Placówki', href: '/patient/dashboard' },
+        ];
         break;
     }
     this.currentStep = this.checkActualStep();
@@ -94,6 +98,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   private checkActualStep(): string {
+    console.log(this.route.snapshot.firstChild);
     const actualRouteEnd = this.route.snapshot.firstChild.routeConfig.path;
     for (const item of this.menuItems) {
       if (item.href.includes(actualRouteEnd)) {

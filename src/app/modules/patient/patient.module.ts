@@ -6,6 +6,11 @@ import { MaterialModule } from '../material/material.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PatientRoutingModule } from './patient-routing/patient-routing.module';
+import { PatientDashboardComponent } from './patient-dashboard/patient-dashboard.component';
+import {RegistrationFormModule} from '../registration-form/registration-form.module';
+import {PortalModule} from '../portal/portal.module';
+import { PatientConfirmComponent } from './patient-confirm/patient-confirm.component';
+import { PatientInfoComponent } from './patient-info/patient-info.component';
 
 @NgModule({
   imports: [
@@ -15,8 +20,10 @@ import { PatientRoutingModule } from './patient-routing/patient-routing.module';
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    PatientRoutingModule
+    PatientRoutingModule,
+    RegistrationFormModule,
+    PortalModule
   ],
-  declarations: [PatientComponent]
+  declarations: [PatientComponent, PatientDashboardComponent, PatientConfirmComponent, PatientInfoComponent]
 })
 export class PatientModule { }
