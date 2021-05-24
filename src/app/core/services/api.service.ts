@@ -46,6 +46,17 @@ export class ApiService {
     return this.http.get(`${environment.host}v1/users/self/appointments?available=false&made=false`);
   }
 
+  getHospitalsCounter(): Observable<any> {
+    return this.http.get(`${environment.host}v1/hospitals`).pipe(
+      map((h: any) => {
+        return h.content.length;
+      })
+    );
+  }
+
+  getVaccinetedCounter(): Observable<any> {
+    return this.http.get(`${environment.host}v1/citizens/vaccinated`);
+  }
 }
 
 
