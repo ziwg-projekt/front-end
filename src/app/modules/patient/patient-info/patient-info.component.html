@@ -1,5 +1,13 @@
 <div class="main-container" fxLayoutAlign="center center">
-  <div class="info-section" fxLayoutAlign="center center">
+  <div class="info-section" fxLayoutAlign="center center" *ngIf="myAppointments.length === 0">
     <p>Przejdź do sekcji Placówki,<br> a następnie wybierz termin i miejsce szczepienia.</p>
+  </div>
+  <div class="vaccine-container" fxLayoutAlign="center center" *ngIf="myAppointments.length !== 0" fxLayout="column">
+    <div class="info-section" fxLayoutAlign="center center">
+      <p>Twoje szczepienie</p>
+    </div>
+    <app-appointment-view (click)="openAppointmentDialog(a)" (cancelAppointment)="cancelAppointment(a)" class="appointment-view"
+                          *ngFor="let a of myAppointments" [appointment]="a">
+    </app-appointment-view>
   </div>
 </div>

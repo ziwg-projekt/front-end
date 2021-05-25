@@ -43,7 +43,12 @@ export class ApiService {
   }
 
   public selfAppointments(): Observable<any> {
-    return this.http.get(`${environment.host}v1/users/self/appointments?available=false&made=false`);
+    return this.http.get(`${environment.host}v1/users/self/appointments?available=false&made=false`).pipe(
+      map((item: any) => item.content));
+  }
+
+  public cancelAppointment(id: number): Observable<any> {
+    return this.http.patch(`${environment.host}v1/appointments/${id}/actions/cancel`, null);
   }
 
   getHospitalsCounter(): Observable<any> {
