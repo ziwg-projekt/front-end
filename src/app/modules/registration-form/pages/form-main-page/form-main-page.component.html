@@ -17,12 +17,12 @@
         <mat-card class="small-icon-wrapper" fxLayoutAlign="center center">
           <mat-icon aria-hidden="false">accessibility_new</mat-icon>
         </mat-card>
-        <div class="counter-info">
-          <h1>1 231 425</h1>
-          <p>Zaszczepionych</p>
+        <div class="counter-info" *ngIf="(vaccinetedCounter$ | async) as counter">
+          <h1>{{counter.count}}</h1>
+          <p>Liczba zaszczepionych</p>
         </div>
         <mat-card class="guide-icon-counter-wrapper" fxLayoutAlign="center center" style="width: 50px">
-          <p>+220</p>
+          <p>+1</p>
         </mat-card>
       </mat-card>
       <mat-card fxFlex="35" fxFlex.lt-xl="45"
@@ -32,12 +32,12 @@
         <mat-card class="small-icon-wrapper" fxLayoutAlign="center center">
           <mat-icon aria-hidden="false">place</mat-icon>
         </mat-card>
-        <div class="counter-info">
-          <h1>1 536</h1>
-          <p>Placówek</p>
+        <div class="counter-info" *ngIf="hospitalsCounter$ | async as counter">
+          <h1>{{counter}}</h1>
+          <p>Liczba placówek</p>
         </div>
         <mat-card class="guide-icon-counter-wrapper" fxLayoutAlign="center center" style="width: 50px">
-          <p>+5</p>
+          <p>+1</p>
         </mat-card>
       </mat-card>
     </div>

@@ -8,16 +8,12 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { CitizenStateType } from 'src/app/core/enums/citizen-state.enum';
 import { Appointment } from 'src/app/core/models/appointment';
 import { Citizen } from 'src/app/core/models/citizen';
 import { Hospital } from 'src/app/core/models/hospital';
 import { PortalService } from 'src/app/core/services/portal.service';
-import { NewAppointmentDialogComponent } from '../appointments/new-appointment-dialog/new-appointment-dialog.component';
-import { DatePipe } from '@angular/common';
+import { NewAppointmentDialogComponent } from '../../components/new-appointment-dialog/new-appointment-dialog.component';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { AppointmentDto } from 'src/app/core/models/appointment-dto';
 
 @Component({
   selector: 'app-patients',
@@ -32,7 +28,7 @@ export class PatientsComponent implements OnInit, OnDestroy {
   citizenForm: FormGroup;
   subscriptions: Subscription[] = [];
   appointments$: Observable<Appointment[]>;
-  enableForm: boolean = false;
+  isNewCitizenRegister: boolean = false;
   hospital: Hospital;
   currentCitizen: Citizen;
   constructor(
@@ -40,7 +36,6 @@ export class PatientsComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private portalService: PortalService,
     public dialog: MatDialog,
-    private datePipe: DatePipe,
     private authService: AuthService
   ) {
     this.subscriptions.push(
@@ -63,45 +58,91 @@ export class PatientsComponent implements OnInit, OnDestroy {
 
   searchPatient() {
     if (this.personalId.valid && this.personalId.value != '') {
-      this.subscriptions.push(
-        this.portalService.getPatient(this.personalId.value).subscribe(
-          //pomocniczy pesel 2888924742
-          (c) => {
-            this.patchValueOfCitizen(c);
-            this.currentCitizen = c;
-            this.enableForm = true;
-            this.getAppointments();
-          },
-          (error) => {
-            this.toastr.warning(
-              `Nie ma takiego pacjenta z numerem PESEL ${this.personalId.value}`
-            );
-          }
-        )
-      );
+      //looking for patient in hospital
+      console.log(this.isNewCitizenRegister);
+      if (!this.isNewCitizenRegister) {
+        this.subscriptions.push(
+          this.portalService.getPatient(this.personalId.value).subscribe(
+            //pomocniczy pesel 99110323923
+            (c) => {
+              this.patchValueOfCitizen(c);
+              this.currentCitizen = c;
+              this.getAppointments();
+            },
+            (error) => {
+              this.toastr.warning(
+                `Nie ma takiego pacjenta z numerem PESEL ${this.personalId.value}`
+              );
+            }
+          )
+        );
+        //looking for citizen from government api
+      } else {
+        this.subscriptions.push(
+          this.portalService
+            .getCitizenFromGovernmentApi(this.personalId.value)
+            .subscribe(
+              //pomocniczy pesel 56111245968
+              (c) => {
+                this.patchValueOfCitizen(c);
+                this.currentCitizen = c;
+              },
+              (error) => {
+                this.toastr.warning(
+                  `Nie ma takiego pacjenta z numerem PESEL ${this.personalId.value}`
+                );
+              }
+            )
+        );
+      }
     }
   }
 
   initForm() {
     this.citizenForm = this.fb.group({
-      address: [undefined, Validators.required],
-      email: [undefined, Validators.required],
-      hospital: [this.hospital],
-      name: [undefined, Validators.required],
-      surname: [undefined, Validators.required],
-      pesel: [undefined, Validators.required],
+      email: [undefined],
+      name: [undefined],
+      surname: [undefined],
+      pesel: [undefined],
       phone_number: [undefined],
+      username: [undefined],
+      password: [undefined],
+      address: [undefined],
       city: [undefined, Validators.required],
       street: [undefined, Validators.required],
       street_number: [undefined, Validators.required],
-      state: [CitizenStateType.Waiting],
     });
   }
 
   submitForm() {
-    if (!this.personalId.value) {
-      //dodanie nowego pacjenta
+    if (this.isNewCitizenRegister) {
+      this.citizenForm.get('username').setValidators(Validators.required);
+      this.citizenForm.get('password').setValidators(Validators.required);
+      if (this.citizenForm.valid) {
+        this.subscriptions.push(
+          this.portalService
+            .addPatientInHospital(this.citizenForm.value)
+            .subscribe(
+              (c) => {
+                this.patchValueOfCitizen(c);
+                this.currentCitizen = c;
+                this.isNewCitizenRegister = false;
+                this.toastr.success('Pomyslnie dodano pacjenta');
+              },
+              (e) => {
+                this.toastr.error(
+                  'Pacjent o podanym numerze PESEl jest już zarejestrowany w szpitalu'
+                );
+              }
+            )
+        );
+      } else {
+        this.citizenForm.markAllAsTouched();
+        this.toastr.warning('Proszę wypełnić wymagane pola');
+      }
     } else {
+      this.citizenForm.get('username').clearValidators();
+      this.citizenForm.get('password').clearValidators();
       if (this.citizenForm.valid) {
         this.subscriptions.push(
           this.portalService
@@ -113,44 +154,33 @@ export class PatientsComponent implements OnInit, OnDestroy {
                 this.toastr.success('Dane pacjenta zostały zaktualizowane');
               },
               (e) => {
-                this.toastr.success('Błąd podczas aktualizowaneia danych');
+                this.toastr.error('Błąd podczas aktualizowaneia danych');
               }
             )
         );
+      } else {
+        this.citizenForm.markAllAsTouched();
+        this.toastr.warning('Proszę wypełnić wymagane pola');
       }
     }
   }
 
   patchValueOfCitizen(citizen: Citizen) {
     this.citizenForm.patchValue(citizen);
-    this.citizenForm.get('city').setValue(citizen.address.city);
-    this.citizenForm.get('street').setValue(citizen.address.street);
-    this.citizenForm
-      .get('street_number')
-      .setValue(citizen.address.street_number);
-  }
-
-  newUserToggle() {
-    if ((this.enableForm && this.personalId.enabled) || !this.enableForm) {
-      this.enableForm = true;
-      this.personalId.disable();
-    } else if (this.enableForm && !this.personalId.enabled) {
-      this.enableForm = false;
-      this.personalId.enable();
-    }
-    this.resetValues();
-  }
-
-  resetSearch() {
-    if (this.personalId.enabled) {
-      this.resetValues();
-      this.enableForm = false;
+    if (citizen.address) {
+      this.citizenForm.get('city').setValue(citizen.address.city);
+      this.citizenForm.get('street').setValue(citizen.address.street);
+      this.citizenForm
+        .get('street_number')
+        .setValue(citizen.address.street_number);
     }
   }
 
   resetValues() {
+    if (!this.isNewCitizenRegister) this.isNewCitizenRegister = false;
     this.personalId.reset();
     this.citizenForm.reset();
+    this.currentCitizen = null;
     this.appointments$ = null;
   }
 
@@ -159,31 +189,6 @@ export class PatientsComponent implements OnInit, OnDestroy {
       this.currentCitizen.pesel
     );
   }
-  openNewAppointmentDialog() {
-    const dialogRef = this.dialog.open(NewAppointmentDialogComponent, {
-      width: '500px',
-      height: '500px',
-      data: {
-        hospitalId: this.hospital.id,
-        citizen: this.currentCitizen,
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((data: Appointment) => {
-      if (data && data.citizen) {
-        let appointmentDto: AppointmentDto = {
-          citizenPesel: data.citizen.pesel,
-          doctorId: data.doctor.id,
-          vaccineCode: data.vaccine.code,
-          date: this.datePipe.transform(data.date, 'yyyy-MM-dd HH:mm'),
-        };
-
-        this.portalService.addAppointment(appointmentDto).subscribe((a) => {
-          this.getAppointments();
-        });
-      }
-    });
-  }
 
   openAppointmentDialog(a: Appointment) {
     const dialogRef = this.dialog.open(NewAppointmentDialogComponent, {
@@ -191,10 +196,22 @@ export class PatientsComponent implements OnInit, OnDestroy {
       height: '500px',
       data: {
         hospitalId: this.hospital.id,
-        citizen: this.currentCitizen,
         appointment: a,
       },
     });
-    dialogRef.afterClosed().subscribe((data: Appointment) => {});
+  }
+
+  doneAppointment(a: Appointment) {
+    this.portalService.madeAppointment(a).subscribe((a) => {
+      this.getAppointments();
+      this.toastr.success('Pomyślnie zmieniono status szczepienia');
+    });
+  }
+
+  cancelAppointment(a: Appointment) {
+    this.portalService.notMadeAppointment(a).subscribe((a) => {
+      this.getAppointments();
+      this.toastr.success('Pomyślnie odwołono szczepienie dla danego pacjenta');
+    });
   }
 }

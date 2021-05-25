@@ -1,0 +1,19 @@
+<div class="main-container" fxLayout="column" fxLayoutAlign="start" >
+  <div class="buttons-container" fxLayout="row" fxLayoutAlign="space-evenly center">
+    <div class="radio-container">
+    <input type="radio" name="appointment-radio" id="Available" checked [(ngModel)]="chosenRadioButton" [value]="appointmentState.Available" (ngModelChange)="getAppointments()">
+    <label for="Available">Dostępne</label>
+  </div>
+    <div class="radio-container">
+    <input type="radio" name="appointment-radio" id="Assigned" [(ngModel)]="chosenRadioButton" [value]="appointmentState.Assigned" (ngModelChange)="getAppointments()">
+    <label for="Assigned">Przypisane</label>
+  </div>
+    <div class="radio-container">
+    <input type="radio" name="appointment-radio" id="Made" [(ngModel)]="chosenRadioButton" [value]="appointmentState.Made" (ngModelChange)="getAppointments()">
+    <label for="Made">Wykonane</label>
+  </div>
+  </div>
+  <div class="appointments-container" *ngIf="appointments$ | async as appointments">
+  <app-appointment-view (click)="openAppointmentDialog(a)" class="appointment-view" *ngFor="let a of $any(appointments.content)" [appointment]="a" (doneAppointment)="doneAppointment(a)" (cancelAppointment)="cancelAppointment(a)"></app-appointment-view>
+  </div>
+</div>

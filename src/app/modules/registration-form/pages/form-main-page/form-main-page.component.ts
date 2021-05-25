@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {MediaChange, MediaObserver} from '@angular/flex-layout';
 import {filter, map} from 'rxjs/operators';
 import {Observable} from 'rxjs';
+import { ApiService } from 'src/app/core/services/api.service';
 
 @Component({
   selector: 'app-form-main-page',
@@ -10,13 +11,15 @@ import {Observable} from 'rxjs';
 })
 export class FormMainPageComponent implements OnInit {
   public windowExtended$: Observable<string>;
+  hospitalsCounter$: Observable<number> = this.apiService.getHospitalsCounter();
+  vaccinetedCounter$: Observable<any> = this.apiService.getVaccinetedCounter();
   public newsArray: {
     date: string,
     label: string,
     labelExtension: string
   }[];
 
-  constructor(public mediaObserver: MediaObserver) {
+  constructor(public mediaObserver: MediaObserver, private apiService:ApiService) {
     this.newsArray = [
       {
         date: '10.03',

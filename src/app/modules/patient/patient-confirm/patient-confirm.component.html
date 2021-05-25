@@ -1,0 +1,9 @@
+<p>Czy na pewno chcesz zarejestrować się na szczepienie?</p>
+<div class="buttons-container" fxLayoutAlign="center center">
+  <div class="button-content" fxLayout="row" (click)="confirm.emit(true)" fxLayoutAlign="center center">
+    <p>Tak</p>
+  </div>
+  <div class="button-content false" fxLayout="row" (click)="confirm.emit(false)" fxLayoutAlign="center center">
+    <p>Nie</p>
+  </div>
+</div>

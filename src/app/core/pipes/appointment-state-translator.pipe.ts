@@ -7,12 +7,14 @@ import { AppointmentState } from '../enums/appointment-state.enum';
 export class AppointmentStateTranslatorPipe implements PipeTransform {
   transform(value: AppointmentState): string {
     switch (value) {
-      case AppointmentState.Confirmed:
-        return 'Zatwierdzone';
-      case AppointmentState.Cancelled:
+      case AppointmentState.Assigned:
+        return 'Przypisane';
+      case AppointmentState.Available:
+        return 'Dostępne';
+      case AppointmentState.Not_made:
         return 'Anulowane';
-      case AppointmentState.Finished:
-        return 'Ukończone';
+      case AppointmentState.Made:
+        return 'Wykonane';
     }
     return null;
   }
