@@ -7,7 +7,7 @@
       <p>Twoje szczepienie</p>
     </div>
     <app-appointment-view (click)="openAppointmentDialog(a)" (cancelAppointment)="cancelAppointment(a)" class="appointment-view"
-                          *ngFor="let a of myAppointments" [appointment]="a">
+                          *ngFor="let a of myAppointments" [appointment]="a" [type]="'user'">
     </app-appointment-view>
   </div>
 </div>

@@ -8,6 +8,12 @@
   height: 800px;
   overflow-y: auto;
   overflow-x: hidden;
+  p {
+    font-size: 20px;
+    text-align: center;
+    color: #42427d;
+    font-weight: bold;
+  }
 }
 
 .no-appointment {

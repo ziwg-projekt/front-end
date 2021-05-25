@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { AppointmentState } from 'src/app/core/enums/appointment-state.enum';
-import { Appointment } from 'src/app/core/models/appointment';
-import { AppointmentConfirmDialogComponent } from '../appointment-confirm-dialog/appointment-confirm-dialog.component';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {AppointmentState} from 'src/app/core/enums/appointment-state.enum';
+import {Appointment} from 'src/app/core/models/appointment';
+import {AppointmentConfirmDialogComponent} from '../appointment-confirm-dialog/appointment-confirm-dialog.component';
+
 @Component({
   selector: 'app-appointment-view',
   templateUrl: './appointment-view.component.html',
@@ -10,18 +11,27 @@ import { AppointmentConfirmDialogComponent } from '../appointment-confirm-dialog
 })
 export class AppointmentViewComponent implements OnInit {
   @Input() appointment: Appointment;
+  @Input() type: string;
   @Output() cancelAppointment = new EventEmitter();
   @Output() doneAppointment = new EventEmitter();
   appointmentState = AppointmentState;
+
   constructor(
     public dialog: MatDialog
-  ) {}
+  ) {
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
+
 
   cancelAppointmentDialog(event: Event) {
     event.stopPropagation();
-    this.openDialog('cancel');
+    if (this.type === 'user') {
+      this.openDialog('resign');
+    } else {
+      this.openDialog('cancel');
+    }
   }
 
   doneAppointmentDialog(event: Event) {
@@ -42,6 +52,8 @@ export class AppointmentViewComponent implements OnInit {
           this.cancelAppointment.emit();
         } else if (mode == 'confirm') {
           this.doneAppointment.emit();
+        } else if (mode === 'resign') {
+          this.cancelAppointment.emit();
         }
       }
     });

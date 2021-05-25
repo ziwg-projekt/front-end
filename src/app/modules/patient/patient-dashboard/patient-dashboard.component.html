@@ -3,12 +3,18 @@
     <app-map [markers]="hospitalArray" (hospitalClicked)="fetchAppointments($event)"></app-map>
   </div>
   <div class="details-container" fxFlex="30">
-    <ng-container *ngIf="hospitalArray.length > 0">
+    <ng-container *ngIf="actualHospital">
+      <p>{{actualHospital.name}}</p>
+      <div class="no-appointment" fxLayoutAlign="center center" *ngIf="appointmentArray.length === 0">
+        <div class="title-wrapper">
+          <p>Brak terminów</p>
+        </div>
+      </div>
       <app-appointment-view (click)="openAppointmentDialog(a)" class="appointment-view"
                             *ngFor="let a of appointmentArray" [appointment]="a">
       </app-appointment-view>
     </ng-container>
-    <ng-container *ngIf="appointmentArray.length === 0">
+    <ng-container *ngIf="!actualHospital">
       <div class="no-appointment" fxLayoutAlign="center center">
         <div class="title-wrapper">
           <p>Wybierz placówkę</p>
