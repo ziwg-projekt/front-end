@@ -45,6 +45,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
       case Authority.Admin:
         this.menuItems = [
           { icon: 'local_hospital', label: 'Szpital', href: '/admin/hospital' },
+          { icon: 'business', label: 'Firmy', href: '/admin/companies' },
         ];
         this.currentStep = 'Szpital';
         break;

@@ -7,6 +7,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminRoutingModule } from './admin-routing/admin-routing.module';
 import { HospitalComponent } from './hospital/hospital.component';
+import { CompaniesComponent } from './companies/companies.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -17,6 +18,6 @@ import { HospitalComponent } from './hospital/hospital.component';
     ReactiveFormsModule,
     AdminRoutingModule,
   ],
-  declarations: [AdminComponent, HospitalComponent],
+  declarations: [AdminComponent, HospitalComponent, CompaniesComponent],
 })
 export class AdminModule {}
