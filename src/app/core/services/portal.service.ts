@@ -104,6 +104,10 @@ export class PortalService {
     return this.http.post(this.host + 'v1/hospitals', hospital);
   }
 
+  addCompany(company): Observable<any> {
+    return this.http.post(this.host + 'v1/companies', company);
+  }
+
   addPatientInHospital(patient): Observable<Citizen> {
     let newPatient: CitizenRegisterDto = {
       city: patient.city,
